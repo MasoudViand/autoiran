@@ -1,13 +1,14 @@
 // @flow
-// import firebase from "@react-native-firebase/app";
-//import database from "@react-native-firebase/database";
+import firebase from "@react-native-firebase/app";
+import database from "@react-native-firebase/database";
+import auth from "@react-native-firebase/auth";
 import _ from "lodash";
 import React from "react";
 import { GiftedChat } from "react-native-gifted-chat";
 import Fire from "../Fire";
 import { View, Keyboard, Alert, TouchableOpacity, Text } from "react-native";
 import { WebView } from "react-native-webview";
-import { firebase, auth, database } from "react-native-firebase";
+//import { firebase, auth, database } from "react-native-firebase";
 type Props = {
   name?: string,
 };

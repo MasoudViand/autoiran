@@ -1,6 +1,7 @@
-import firebase from "react-native-firebase";
-// import firebase from "@react-native-firebase/app";
-// import database from "@react-native-firebase/database";
+//import firebase from "react-native-firebase";
+import firebase from "@react-native-firebase/app";
+import database from "@react-native-firebase/database";
+import auth from "@react-native-firebase/auth";
 import _ from "lodash";
 class Fire {
   constructor() {

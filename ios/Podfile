@@ -4,8 +4,8 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 # https://firebase.google.com/docs/ios/setup#available-pods
 target 'rnPhoneAuthDemo' do
   # Pods for rnPhoneAuthDemo
-  pod 'Firebase/Core', '~> 6.3.0'
-  pod 'Firebase/Auth', '~> 6.3.0'
+  pod 'Firebase/Core'
+  pod 'Firebase/Auth'
   pod 'Firebase/Database'
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"

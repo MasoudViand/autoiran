@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import PhoneAuthScreen from "./screens/Main";
 import Chat from "./screens/Chat";
+import News from "./screens/News";
 import { View, Text } from "react-native";
 
 // function HomeScreen() {
@@ -25,6 +26,11 @@ function App() {
           name="Chat"
           component={Chat}
           options={{ title: "Live" }}
+        />
+        <Stack.Screen
+          name="News"
+          component={News}
+          options={{ title: "News" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -1,5 +1,6 @@
-//import firebase from "@react-native-firebase/app";
-//import database from "@react-native-firebase/database";
+import firebase from "@react-native-firebase/app";
+import database from "@react-native-firebase/database";
+import auth from "@react-native-firebase/auth";
 import React, { Component } from "react";
 import {
   StyleSheet,
@@ -10,7 +11,7 @@ import {
   TextInput,
   Button,
 } from "react-native";
-import { firebase, auth, database, uid } from "react-native-firebase";
+//import { firebase, auth, database, uid } from "react-native-firebase";
 
 class PhoneAuthScreen extends Component {
   constructor(props) {
@@ -155,9 +156,26 @@ class PhoneAuthScreen extends Component {
   renderSightoutView = () => {
     if (auth().currentUser) {
       return (
-        <TouchableOpacity onPress={this.logOut}>
-          <Text>Logout</Text>
-        </TouchableOpacity>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            padding: 10,
+            backgroundColor: "#e1e1e1",
+            justifyContent: "space-between",
+            alignContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <View>
+            <Text style={{ color: "#222" }}>
+              Wellcome Back {this.state.inputName}
+            </Text>
+          </View>
+          <TouchableOpacity onPress={this.logOut}>
+            <Text style={{ color: "#222" }}>Logout</Text>
+          </TouchableOpacity>
+        </View>
       );
     }
   };
@@ -210,11 +228,16 @@ class PhoneAuthScreen extends Component {
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: "#333" }]}>
         <View style={styles.page}>
-          <Text>Wellcome Back {this.state.inputName}</Text>
-          <TouchableOpacity onPress={this.onPress}>
-            <Text>Go to Live page</Text>
-          </TouchableOpacity>
-          {this.renderSightoutView()}
+          <View style={{ flex: 0.5 }}>{this.renderSightoutView()}</View>
+          <View style={{ flex: 3 }}>
+            <TouchableOpacity onPress={this.onPress}>
+              <Text>Go to Live page</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this.navigate("News")}>
+              <Text>Go to News page</Text>
+            </TouchableOpacity>
+          </View>
+
           <TextInput
             style={styles.textInput}
             placeholder="Phone Number : (i.e. +989124567890)"
@@ -266,8 +289,8 @@ const styles = StyleSheet.create({
   },
   page: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    // alignItems: "center",
+    // justifyContent: "center",
   },
   textInput: {
     marginTop: 20,
