@@ -1,27 +1,37 @@
 // @flow
 import auth from "@react-native-firebase/auth";
 import _ from "lodash";
-import React from "react";
-import { View, Keyboard, Alert, TouchableOpacity, Text } from "react-native";
-type Props = {
-  // name?: string,
-};
+import React, { Component } from "react";
+import { View, Keyboard, Alert, TouchableOpacity, Image } from "react-native";
+//import { Card, SimpleCard } from "@paraboly/react-native-card";
+import {
+  Container,
+  Header,
+  Content,
+  Card,
+  CardItem,
+  Thumbnail,
+  Text,
+  Button,
+  Icon,
+  Left,
+  Body,
+  Right,
+} from "native-base";
 
-class News extends React.Component<Props> {
+class News extends Component {
   constructor(props) {
     super(props);
-    //const params = this.props.route.params;
-    //name = params.name;
+    this.state = {
+      messages: [],
+      user: [],
+      isTyping: true,
+      renderUsernameOnMessage: true,
+      isLogged: false,
+    };
     this.navigate = this.props.navigation.navigate;
   }
 
-  state = {
-    messages: [],
-    user: [],
-    isTyping: true,
-    renderUsernameOnMessage: true,
-    isLogged: false,
-  };
   renderSightoutView = () => {
     if (auth().currentUser) {
       return (
@@ -45,19 +55,102 @@ class News extends React.Component<Props> {
   };
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <View style={{ flex: 0.5 }}>{this.renderSightoutView()}</View>
-        <View style={{ flex: 3 }}>
-          <Text>Hello!</Text>
-        </View>
-        <View style={{ flex: 4 }}>
-          <Text>Bye!</Text>
-        </View>
-      </View>
+      <Container>
+        {/* <Header /> */}
+        <Content>
+          <Card>
+            <CardItem header>
+              <Left>
+                {/* <Thumbnail source={{ uri: "Image URL" }} /> */}
+                <Body>
+                  <Text>NativeBase</Text>
+                  <Text note>GeekyAnts</Text>
+                </Body>
+              </Left>
+            </CardItem>
+            <CardItem cardBody>
+              <Image
+                source={{ uri: "https://picsum.photos/200" }}
+                style={{ height: 200, width: null, flex: 1 }}
+              />
+            </CardItem>
+            <CardItem>
+              <Body>
+                <Text>//Your text here</Text>
+              </Body>
+            </CardItem>
+            <CardItem
+              bordered
+              transparent
+              footer
+              button
+              onPress={() =>
+                this.navigate("SingleNews", {
+                  name: this.state.inputName || this.state.name,
+                })
+              }
+            >
+              <Text>Read More</Text>
+            </CardItem>
+          </Card>
+          <Card>
+            <CardItem header>
+              <Text>NativeBase</Text>
+            </CardItem>
+            <CardItem cardBody>
+              <Image
+                source={{ uri: "https://picsum.photos/200" }}
+                style={{ height: 200, width: null, flex: 1 }}
+              />
+            </CardItem>
+            <CardItem>
+              <Body>
+                <Text>//Your text here</Text>
+              </Body>
+            </CardItem>
+            <CardItem
+              bordered
+              transparent
+              footer
+              button
+              onPress={() => alert("This is Card Footer")}
+            >
+              <Text>Read More</Text>
+            </CardItem>
+          </Card>
+          <Card>
+            <CardItem header>
+              <Text>NativeBase</Text>
+            </CardItem>
+            <CardItem cardBody>
+              <Image
+                source={{ uri: "https://picsum.photos/200" }}
+                style={{ height: 200, width: null, flex: 1 }}
+              />
+            </CardItem>
+            <CardItem>
+              <Body>
+                <Text>//Your text here</Text>
+              </Body>
+            </CardItem>
+            <CardItem
+              bordered
+              transparent
+              footer
+              button
+              onPress={() =>
+                this.navigate("SingleNews", {
+                  name: this.state.inputName || this.state.name,
+                })
+              }
+            >
+              <Text>Read More</Text>
+            </CardItem>
+          </Card>
+        </Content>
+      </Container>
     );
   }
-  componentDidMount() {}
-  componentWillUnmount() {}
 }
 
 export default News;

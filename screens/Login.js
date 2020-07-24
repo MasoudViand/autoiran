@@ -10,26 +10,24 @@ import {
   Text,
   TextInput,
   Button,
+  KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
-//import { firebase, auth, database, uid } from "react-native-firebase";
 
-class PhoneAuthScreen extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      phone: "",
+      confirmResult: null,
+      verificationCode: "",
+      userId: "",
+      name: "",
+      inputName: null,
+    };
     this.navigate = this.props.navigation.navigate;
   }
-  // static navigationOptions = {
-  //   title: "Chatter",
-  // };
 
-  state = {
-    phone: "",
-    confirmResult: null,
-    verificationCode: "",
-    userId: "",
-    name: "",
-    inputName: null,
-  };
   isLoggedin = () => {
     if (auth().currentUser) {
       return true;
@@ -37,14 +35,17 @@ class PhoneAuthScreen extends Component {
       return false;
     }
   };
-  redirectIfLoggedin = () => {
-    if (auth().currentUser) {
-      this.navigate("Chat", { name: this.state.inputName || this.state.name });
-    }
-  };
-  onPress = () => {
-    this.navigate("Chat", { name: this.state.inputName || this.state.name });
-  };
+  // redirectIfLoggedin = () => {
+  //   if (auth().currentUser) {
+  //     this.navigate("Chat", { name: this.state.inputName || this.state.name });
+  //   }
+  // };
+  // onPress = () => {
+  //   this.navigate("Chat", { name: this.state.inputName || this.state.name });
+  // };
+  goToPage(page) {
+    this.navigate(page, { name: this.state.inputName || this.state.name });
+  }
   logOut = () => {
     auth()
       .signOut()
@@ -141,9 +142,10 @@ class PhoneAuthScreen extends Component {
           }
         })
         .then(() => {
-          this.onPress();
+          //this.onPress();
           //this.setState({ inputName: this.state.name });
           alert(`Welcome! ${this.state.inputName}`);
+          this.navigate("Home");
         })
         .catch((error) => {
           alert(error.message);
@@ -227,45 +229,49 @@ class PhoneAuthScreen extends Component {
   render() {
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: "#333" }]}>
-        <View style={styles.page}>
-          <View style={{ flex: 0.5 }}>{this.renderSightoutView()}</View>
-          <View style={{ flex: 3 }}>
-            <TouchableOpacity onPress={this.onPress}>
-              <Text>Go to Live page</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.navigate("News")}>
-              <Text>Go to News page</Text>
-            </TouchableOpacity>
-          </View>
-
-          <TextInput
-            style={styles.textInput}
-            placeholder="Phone Number : (i.e. +989124567890)"
-            placeholderTextColor="#eee"
-            keyboardType="phone-pad"
-            value={this.state.phone}
-            onChangeText={(phone) => {
-              this.setState({ phone });
-            }}
-            maxLength={15}
-            editable={this.state.confirmResult ? false : true}
-          />
-
-          <TouchableOpacity
-            style={[styles.themeButton, { marginTop: 20 }]}
-            onPress={
-              this.state.confirmResult
-                ? this.changePhoneNumber
-                : this.handleSendCode
-            }
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+          style={{ backgroundColor: "#333" }}
+          keyboardShouldPersistTaps="never"
+        >
+          <KeyboardAvoidingView
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
           >
-            <Text style={styles.themeButtonTitle}>
-              {this.state.confirmResult ? "Change Phone Number" : "Send Code"}
-            </Text>
-          </TouchableOpacity>
+            <View style={styles.page}>
+              <TextInput
+                style={styles.textInput}
+                placeholder="Phone Number : (i.e. +989124567890)"
+                placeholderTextColor="#eee"
+                keyboardType="phone-pad"
+                value={this.state.phone}
+                onChangeText={(phone) => {
+                  this.setState({ phone });
+                }}
+                maxLength={15}
+                editable={this.state.confirmResult ? false : true}
+              />
 
-          {this.state.confirmResult ? this.renderConfirmationCodeView() : null}
-        </View>
+              <TouchableOpacity
+                style={[styles.themeButton, { marginTop: 20 }]}
+                onPress={
+                  this.state.confirmResult
+                    ? this.changePhoneNumber
+                    : this.handleSendCode
+                }
+              >
+                <Text style={styles.themeButtonTitle}>
+                  {this.state.confirmResult
+                    ? "Change Phone Number"
+                    : "Send Code"}
+                </Text>
+              </TouchableOpacity>
+
+              {this.state.confirmResult
+                ? this.renderConfirmationCodeView()
+                : null}
+            </View>
+          </KeyboardAvoidingView>
+        </ScrollView>
       </SafeAreaView>
     );
   }
@@ -289,8 +295,8 @@ const styles = StyleSheet.create({
   },
   page: {
     flex: 1,
-    // alignItems: "center",
-    // justifyContent: "center",
+    alignItems: "center",
+    justifyContent: "center",
   },
   textInput: {
     marginTop: 20,
@@ -324,4 +330,4 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
 });
-export default PhoneAuthScreen;
+export default Login;

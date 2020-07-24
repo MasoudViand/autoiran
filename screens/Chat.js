@@ -8,6 +8,7 @@ import { GiftedChat } from "react-native-gifted-chat";
 import Fire from "../Fire";
 import { View, Keyboard, Alert, TouchableOpacity, Text } from "react-native";
 import { WebView } from "react-native-webview";
+import AutoHeightWebView from "react-native-autoheight-webview";
 //import { firebase, auth, database } from "react-native-firebase";
 type Props = {
   name?: string,
@@ -27,6 +28,8 @@ class Chat extends React.Component<Props> {
     isTyping: true,
     renderUsernameOnMessage: true,
     isLogged: false,
+    vSource:
+      '<video playsinline controls autoplay width="100%" src="https://ul.cdn946.net:8443/hls/iexb8.m3u8?s=J-Uc5MIyxzH_KqKOoe9UAw&e=1595542202" ></video>',
     //name: (name = name || null),
   };
 
@@ -51,19 +54,60 @@ class Chat extends React.Component<Props> {
         <View
           style={{
             flex: 1,
-            flexDirection: "row",
+            flexDirection: "row-reverse",
             padding: 10,
-            backgroundColor: "#e1e1e1",
             justifyContent: "space-between",
-            alignContent: "center",
             alignItems: "center",
           }}
         >
           <View>
-            <Text style={{ color: "#222" }}>Wellcome Back {name}</Text>
+            <Text
+              style={{
+                color: "#222",
+                writingDirection: "rtl",
+                fontFamily: "Shabnam",
+                textAlign: "right",
+              }}
+            >
+              {name} عزیز خوش آمدید
+            </Text>
           </View>
           <TouchableOpacity onPress={this.logOut}>
-            <Text style={{ color: "#222" }}>Logout</Text>
+            <Text style={{ color: "#222" }}>خروج</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else {
+      return (
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row-reverse",
+            padding: 10,
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <View>
+            <Text
+              style={{
+                color: "#222",
+                writingDirection: "rtl",
+                fontFamily: "Shabnam",
+                textAlign: "right",
+              }}
+            >
+              چت فقط برای اعضا فعال می باشد
+            </Text>
+          </View>
+          <TouchableOpacity onPress={() => this.navigate("Login")}>
+            <Text
+              style={{
+                color: "#222",
+              }}
+            >
+              ثبت نام/ورود
+            </Text>
           </TouchableOpacity>
         </View>
       );
@@ -77,14 +121,27 @@ class Chat extends React.Component<Props> {
     //alert(name);
     return (
       <View style={{ flex: 1 }}>
-        <View style={{ flex: 0.5 }}>{this.renderSightoutView()}</View>
+        <View style={{ flex: 0.7 }}>{this.renderSightoutView()}</View>
         <View style={{ flex: 3 }}>
-          <WebView
-            source={{ uri: "http://autoiran.com/" }}
+          {/* <WebView
+            allowsFullscreenVideo={true}
+            javaScriptEnabled={true}
+            source={{ uri: "http://autoiran.com/f1.html" }}
             style={{ backgroundColor: "powderblue" }}
+          /> */}
+          <AutoHeightWebView
+            javaScriptEnabled={true}
+            source={{
+              html: this.state.vSource,
+            }}
+            useWebKit={true}
+            originWhitelist={["*"]}
+            allowsInlineMediaPlayback={true}
+            scalesPageToFit={true}
+            ignoreSslError={true}
           />
         </View>
-        <View style={{ flex: 4 }}>
+        <View style={{ flex: 6 }}>
           <GiftedChat
             messages={this.state.messages}
             onSend={Fire.shared.send}
