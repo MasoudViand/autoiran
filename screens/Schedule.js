@@ -7,7 +7,8 @@ import {
   StyleSheet,
 } from "react-native";
 //import moment from "moment";
-//import "moment/min/locales";
+import style from "./css/styles";
+import "moment/min/locales";
 import moment from "jalali-moment";
 import {
   Grid,
@@ -31,12 +32,11 @@ export default class Schedule extends Component {
   }
 
   componentDidMount() {
-    //moment.locale("fa");
+    moment.locale("fa");
     fetch("https://ergast.com/api/f1/current.json")
       .then((response) => response.json())
       .then((json) => {
         this.setState({ data: json.MRData.RaceTable });
-        console.log(this.state.data);
       })
       .catch((error) => console.error(error))
       .finally(() => {
@@ -49,13 +49,14 @@ export default class Schedule extends Component {
 
     return (
       <Container style={{ flex: 1, padding: 24 }}>
-        <H1 style={[style.text, { marginBottom: 15 }]}>
+        <Text style={[style.text, { marginBottom: 15, fontSize: 26 }]}>
           برنامه مسابقات فصل {data.season}
-        </H1>
+        </Text>
         {isLoading ? (
           <ActivityIndicator />
         ) : (
           <FlatList
+            showsVerticalScrollIndicator={false}
             data={data.Races}
             keyExtractor={(item, index) => "key" + index}
             renderItem={({ item }) => (
@@ -88,19 +89,3 @@ export default class Schedule extends Component {
     return moment.from(date, "en", "YYYY/MM/DD").format("D MMM YYYY");
   };
 }
-const style = StyleSheet.create({
-  text: {
-    fontFamily: "Shabnam",
-    color: "#222",
-    textAlign: "right",
-    writingDirection: "rtl",
-  },
-  card: {
-    backgroundColor: "#fff",
-    paddingVertical: 12,
-    paddingHorizontal: 7,
-    borderWidth: 1,
-    borderColor: "rgba(193, 173, 173, 0.3)",
-    borderRadius: 7,
-  },
-});
