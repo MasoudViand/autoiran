@@ -149,7 +149,7 @@ class Home extends Component {
                 <Col>
                   <TouchableOpacity
                     onPress={() =>
-                      this.navigate("Chat", {
+                      this.navigate("Schedule", {
                         name: this.state.inputName || this.state.name,
                       })
                     }
@@ -171,7 +171,38 @@ class Home extends Component {
                             textAlign: "right",
                           }}
                         >
-                          پخش زنده
+                          برنامه مسابقات
+                        </Text>
+                      </CardItem>
+                    </Card>
+                  </TouchableOpacity>
+                </Col>
+                <Col>
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.navigate("Standing", {
+                        name: this.state.inputName || this.state.name,
+                      })
+                    }
+                  >
+                    <Card>
+                      <CardItem cardBody>
+                        <Image
+                          source={{ uri: "https://picsum.photos/100" }}
+                          style={{ height: 200, width: null, flex: 1 }}
+                        />
+                      </CardItem>
+                      <CardItem bordered transparent footer>
+                        <Text
+                          style={{
+                            flex: 1,
+                            writingDirection: "rtl",
+                            lineHeight: 25,
+                            fontFamily: "Shabnam-Bold",
+                            textAlign: "right",
+                          }}
+                        >
+                          جدول رتبه بندی فصل
                         </Text>
                       </CardItem>
                     </Card>
@@ -225,17 +256,7 @@ class Home extends Component {
                           style={{ height: 200, width: null, flex: 1 }}
                         />
                       </CardItem>
-                      <CardItem
-                        bordered
-                        transparent
-                        footer
-                        button
-                        onPress={() =>
-                          this.navigate("News", {
-                            name: this.state.inputName || this.state.name,
-                          })
-                        }
-                      >
+                      <CardItem bordered transparent footer button>
                         <Text
                           style={{
                             flex: 1,
@@ -268,17 +289,7 @@ class Home extends Component {
                           style={{ height: 200, width: null, flex: 1 }}
                         />
                       </CardItem>
-                      <CardItem
-                        bordered
-                        transparent
-                        footer
-                        button
-                        onPress={() =>
-                          this.navigate("News", {
-                            name: this.state.inputName || this.state.name,
-                          })
-                        }
-                      >
+                      <CardItem bordered transparent footer button>
                         <Text
                           style={{
                             flex: 1,

@@ -8,7 +8,8 @@ import News from "./screens/News";
 import User from "./screens/User";
 import Home from "./screens/Home";
 import SingleNews from "./screens/SingleNews";
-import { View, Text } from "react-native";
+import Standing from "./screens/Standing";
+import Schedule from "./screens/Schedule";
 
 // function HomeScreen() {
 //   return <PhoneAuthScreen />;
@@ -49,6 +50,16 @@ function App() {
           name="SingleNews"
           component={SingleNews}
           options={{ title: null }}
+        />
+        <Stack.Screen
+          name="Standing"
+          component={Standing}
+          options={{ title: "Standing" }}
+        />
+        <Stack.Screen
+          name="Schedule"
+          component={Schedule}
+          options={{ title: "Schedule" }}
         />
       </Stack.Navigator>
     </NavigationContainer>
