@@ -26,7 +26,11 @@ import {
   Grid,
   Col,
   Row,
+  Footer,
+  FooterTab,
+  Badge,
 } from "native-base";
+import style from "./css/styles";
 import { ScrollView } from "react-native-gesture-handler";
 
 class Home extends Component {
@@ -84,19 +88,12 @@ class Home extends Component {
           }}
         >
           <View>
-            <Text
-              style={{
-                color: "#222",
-                writingDirection: "rtl",
-                fontFamily: "Shabnam",
-                textAlign: "right",
-              }}
-            >
+            <Text style={style.text}>
               {this.state.inputName} عزیز خوش آمدید
             </Text>
           </View>
           <TouchableOpacity onPress={this.logOut}>
-            <Text style={{ color: "#222" }}>خروج</Text>
+            <Text style={style.text}>خروج</Text>
           </TouchableOpacity>
         </View>
       );
@@ -105,25 +102,14 @@ class Home extends Component {
         <View
           style={{
             flex: 1,
-            flexDirection: "row",
             padding: 10,
-            justifyContent: "space-between",
             alignContent: "center",
             alignItems: "center",
             fontFamily: "Shabnam-Medium",
           }}
         >
           <TouchableOpacity onPress={() => this.navigate("Login")}>
-            <Text
-              style={{
-                color: "#222",
-                writingDirection: "rtl",
-                fontFamily: "Shabnam",
-                textAlign: "right",
-              }}
-            >
-              ثبت نام/ورود
-            </Text>
+            <Text style={style.text}>ثبت نام/ورود</Text>
           </TouchableOpacity>
         </View>
       );
@@ -132,12 +118,10 @@ class Home extends Component {
 
   render() {
     return (
-      <SafeAreaView
-        style={[styles.container, { backgroundColor: "#fff", padding: 10 }]}
-      >
+      <SafeAreaView style={[styles.container, { backgroundColor: "#fff" }]}>
         <Container>
-          <ScrollView>
-            <Grid>
+          <ScrollView style={{ padding: 10 }}>
+            <Grid style={{ paddingBottom: 60 }}>
               <Row>
                 <Col>
                   <Card>
@@ -157,21 +141,60 @@ class Home extends Component {
                     <Card>
                       <CardItem cardBody>
                         <Image
-                          source={{ uri: "https://picsum.photos/100" }}
+                          source={require("../assets/img/schedule.jpg")}
                           style={{ height: 200, width: null, flex: 1 }}
                         />
                       </CardItem>
                       <CardItem bordered transparent footer>
                         <Text
+                          numberOfLines={1}
+                          adjustsFontSizeToFit
                           style={{
                             flex: 1,
                             writingDirection: "rtl",
                             lineHeight: 25,
-                            fontFamily: "Shabnam-Bold",
-                            textAlign: "right",
+                            fontFamily: "Shabnam-Medium",
+                            textAlign: "center",
+                            fontWeight: "400",
+                            color: "#222",
                           }}
                         >
                           برنامه مسابقات
+                        </Text>
+                      </CardItem>
+                    </Card>
+                  </TouchableOpacity>
+                </Col>
+                <Col>
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.navigate("Chat", {
+                        name: this.state.inputName || this.state.name,
+                      })
+                    }
+                  >
+                    <Card>
+                      <CardItem cardBody>
+                        <Image
+                          source={require("../assets/img/live.jpg")}
+                          style={{ height: 200, width: null, flex: 1 }}
+                        />
+                      </CardItem>
+                      <CardItem bordered transparent footer>
+                        <Text
+                          numberOfLines={1}
+                          adjustsFontSizeToFit
+                          style={{
+                            flex: 1,
+                            writingDirection: "rtl",
+                            lineHeight: 25,
+                            fontFamily: "Shabnam-Medium",
+                            textAlign: "center",
+                            fontWeight: "400",
+                            color: "#222",
+                          }}
+                        >
+                          پخش زنده
                         </Text>
                       </CardItem>
                     </Card>
@@ -188,21 +211,25 @@ class Home extends Component {
                     <Card>
                       <CardItem cardBody>
                         <Image
-                          source={{ uri: "https://picsum.photos/100" }}
+                          source={require("../assets/img/standing.jpg")}
                           style={{ height: 200, width: null, flex: 1 }}
                         />
                       </CardItem>
                       <CardItem bordered transparent footer>
                         <Text
+                          numberOfLines={1}
+                          adjustsFontSizeToFit
                           style={{
                             flex: 1,
                             writingDirection: "rtl",
                             lineHeight: 25,
-                            fontFamily: "Shabnam-Bold",
-                            textAlign: "right",
+                            fontFamily: "Shabnam-Medium",
+                            textAlign: "center",
+                            fontWeight: "400",
+                            color: "#222",
                           }}
                         >
-                          جدول رتبه بندی فصل
+                          جدول رتبه بندی
                         </Text>
                       </CardItem>
                     </Card>
@@ -210,37 +237,6 @@ class Home extends Component {
                 </Col>
               </Row>
               <Row>
-                <Col>
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.navigate("Chat", {
-                        name: this.state.inputName || this.state.name,
-                      })
-                    }
-                  >
-                    <Card>
-                      <CardItem cardBody>
-                        <Image
-                          source={{ uri: "https://picsum.photos/100" }}
-                          style={{ height: 200, width: null, flex: 1 }}
-                        />
-                      </CardItem>
-                      <CardItem bordered transparent footer>
-                        <Text
-                          style={{
-                            flex: 1,
-                            writingDirection: "rtl",
-                            lineHeight: 25,
-                            fontFamily: "Shabnam-Bold",
-                            textAlign: "right",
-                          }}
-                        >
-                          پخش زنده
-                        </Text>
-                      </CardItem>
-                    </Card>
-                  </TouchableOpacity>
-                </Col>
                 <Col>
                   <TouchableOpacity
                     onPress={() =>
@@ -252,18 +248,22 @@ class Home extends Component {
                     <Card>
                       <CardItem cardBody>
                         <Image
-                          source={{ uri: "https://picsum.photos/100" }}
+                          source={require("../assets/img/news.jpg")}
                           style={{ height: 200, width: null, flex: 1 }}
                         />
                       </CardItem>
                       <CardItem bordered transparent footer button>
                         <Text
+                          numberOfLines={1}
+                          adjustsFontSizeToFit
                           style={{
                             flex: 1,
                             writingDirection: "rtl",
                             lineHeight: 25,
-                            fontFamily: "Shabnam-Bold",
-                            textAlign: "right",
+                            fontFamily: "Shabnam-Medium",
+                            textAlign: "center",
+                            fontWeight: "400",
+                            color: "#222",
                           }}
                         >
                           آخرین اخبار
@@ -291,12 +291,16 @@ class Home extends Component {
                       </CardItem>
                       <CardItem bordered transparent footer button>
                         <Text
+                          numberOfLines={1}
+                          adjustsFontSizeToFit
                           style={{
                             flex: 1,
                             writingDirection: "rtl",
                             lineHeight: 25,
-                            fontFamily: "Shabnam-Bold",
+                            fontFamily: "Shabnam-Medium",
                             textAlign: "right",
+                            fontWeight: "400",
+                            color: "#222",
                           }}
                         >
                           برنامه مسابقات
@@ -308,6 +312,47 @@ class Home extends Component {
               </Row>
             </Grid>
           </ScrollView>
+          <Footer>
+            <FooterTab style={{ backgroundColor: "#fc764c" }}>
+              <Button
+                style={{ backgroundColor: "#ff6738", borderRadius: 0 }}
+                active
+                onPress={() =>
+                  this.navigate("Home", {
+                    name: this.state.inputName || this.state.name,
+                  })
+                }
+              >
+                <Icon
+                  style={{ color: "#fff" }}
+                  type="FontAwesome"
+                  name="home"
+                />
+                <Text style={{ color: "#fff" }}>Main</Text>
+              </Button>
+
+              <Button
+                style={{ backgroundColor: "tranparent" }}
+                vertical
+                badge
+                onPress={() =>
+                  this.navigate("Feed", {
+                    name: this.state.inputName || this.state.name,
+                  })
+                }
+              >
+                <Badge>
+                  <Text>7</Text>
+                </Badge>
+                <Icon
+                  style={{ color: "#e1e1e1" }}
+                  type="FontAwesome"
+                  name="users"
+                />
+                <Text style={{ color: "#e1e1e1" }}>Feed</Text>
+              </Button>
+            </FooterTab>
+          </Footer>
         </Container>
       </SafeAreaView>
     );
@@ -329,46 +374,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#aaa",
-  },
-  page: {
-    flex: 1,
-    // alignItems: "center",
-    // justifyContent: "center",
-  },
-  center: {
-    alignContent: "center",
-    alignItems: "center",
-  },
-  textInput: {
-    marginTop: 20,
-    width: "90%",
-    height: 40,
-    borderColor: "#555",
-    borderWidth: 2,
-    borderRadius: 5,
-    paddingLeft: 10,
-    color: "#fff",
-    fontSize: 16,
-  },
-  themeButton: {
-    width: "90%",
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#888",
-    borderColor: "#555",
-    borderWidth: 2,
-    borderRadius: 5,
-  },
-  themeButtonTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#fff",
-  },
-  verificationView: {
-    width: "100%",
-    alignItems: "center",
-    marginTop: 50,
   },
 });
 export default Home;

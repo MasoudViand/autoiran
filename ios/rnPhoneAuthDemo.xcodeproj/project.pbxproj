@@ -22,9 +22,9 @@
 		33700C04506742749A998532 /* Shabnam-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1EAF0214ADD1432AB896D4B3 /* Shabnam-Thin.ttf */; };
 		3B0276D190754B399EFF43E4 /* Shabnam.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 91521335BE7448719AC8A7B3 /* Shabnam.ttf */; };
 		5854D5950B1F28C368C2420C /* libPods-rnPhoneAuthDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2213974C4BEF663ACC8BE4A /* libPods-rnPhoneAuthDemo.a */; };
-		6AAB33DC0917228ABA566498 /* libPods-rnPhoneAuthDemoTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6372B42A5142AFBF38DD496 /* libPods-rnPhoneAuthDemoTests.a */; };
 		988C58EE723009F899F0EC23 /* libPods-rnPhoneAuthDemo-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50338496FF84AAF2F7B2A25F /* libPods-rnPhoneAuthDemo-tvOSTests.a */; };
 		B2D3A13A9DE37765FEFDF88B /* libPods-rnPhoneAuthDemo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A387D169791088830CB17DFC /* libPods-rnPhoneAuthDemo-tvOS.a */; };
+		F6F2E805258B06B0E07C0E00 /* libPods-rnPhoneAuthDemoTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D0C7B2C835254FF59BFFD8D /* libPods-rnPhoneAuthDemoTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,17 +59,20 @@
 		1402809120294BFA9EC3423F /* Shabnam-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Shabnam-Light.ttf"; path = "../assets/fonts/Shabnam-Light.ttf"; sourceTree = "<group>"; };
 		1A29183FB5B64993AF22A05B /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		1EAF0214ADD1432AB896D4B3 /* Shabnam-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Shabnam-Thin.ttf"; path = "../assets/fonts/Shabnam-Thin.ttf"; sourceTree = "<group>"; };
+		211B81A8B7A275654A6E219E /* Pods-rnPhoneAuthDemo-rnPhoneAuthDemoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnPhoneAuthDemo-rnPhoneAuthDemoTests.debug.xcconfig"; path = "Target Support Files/Pods-rnPhoneAuthDemo-rnPhoneAuthDemoTests/Pods-rnPhoneAuthDemo-rnPhoneAuthDemoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		21DB145422C4986E0DA0DCC0 /* Pods-rnPhoneAuthDemoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnPhoneAuthDemoTests.release.xcconfig"; path = "Target Support Files/Pods-rnPhoneAuthDemoTests/Pods-rnPhoneAuthDemoTests.release.xcconfig"; sourceTree = "<group>"; };
 		24EBE3309AA754386E1E5A56 /* Pods-rnPhoneAuthDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnPhoneAuthDemo.release.xcconfig"; path = "Target Support Files/Pods-rnPhoneAuthDemo/Pods-rnPhoneAuthDemo.release.xcconfig"; sourceTree = "<group>"; };
 		281E89D4725B46ABB3A89A5B /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* rnPhoneAuthDemo-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "rnPhoneAuthDemo-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* rnPhoneAuthDemo-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "rnPhoneAuthDemo-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D03CBB043BC4380B80CC3C3 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
+		2D0C7B2C835254FF59BFFD8D /* libPods-rnPhoneAuthDemoTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-rnPhoneAuthDemoTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FB6A36A47574DE69ABCE785 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/native-base/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		381CAC9110CA4924BE18F261 /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; };
 		50338496FF84AAF2F7B2A25F /* libPods-rnPhoneAuthDemo-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-rnPhoneAuthDemo-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		559D8C367D094F769A7FC6F4 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/native-base/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		55D800CEF1C14F83B572AF0C /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/native-base/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
+		5908A99C9A04EA3FECDF843F /* Pods-rnPhoneAuthDemo-rnPhoneAuthDemoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnPhoneAuthDemo-rnPhoneAuthDemoTests.release.xcconfig"; path = "Target Support Files/Pods-rnPhoneAuthDemo-rnPhoneAuthDemoTests/Pods-rnPhoneAuthDemo-rnPhoneAuthDemoTests.release.xcconfig"; sourceTree = "<group>"; };
 		7E5BAC166BB63FB97B328982 /* Pods-rnPhoneAuthDemo-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnPhoneAuthDemo-tvOS.release.xcconfig"; path = "Target Support Files/Pods-rnPhoneAuthDemo-tvOS/Pods-rnPhoneAuthDemo-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		7F9AC765E25346D38201B69B /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/native-base/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		847F7C6A9A2B94CA5CDEDF06 /* Pods-rnPhoneAuthDemo-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnPhoneAuthDemo-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-rnPhoneAuthDemo-tvOSTests/Pods-rnPhoneAuthDemo-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -86,7 +89,6 @@
 		D2213974C4BEF663ACC8BE4A /* libPods-rnPhoneAuthDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-rnPhoneAuthDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3959FFEC39A418FBADC3FE1 /* Roboto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto.ttf; path = "../node_modules/native-base/Fonts/Roboto.ttf"; sourceTree = "<group>"; };
 		D5961F84F3D44220888B1D04 /* Shabnam-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Shabnam-Bold.ttf"; path = "../assets/fonts/Shabnam-Bold.ttf"; sourceTree = "<group>"; };
-		D6372B42A5142AFBF38DD496 /* libPods-rnPhoneAuthDemoTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-rnPhoneAuthDemoTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E195C805D953DFF734934455 /* Pods-rnPhoneAuthDemoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnPhoneAuthDemoTests.debug.xcconfig"; path = "Target Support Files/Pods-rnPhoneAuthDemoTests/Pods-rnPhoneAuthDemoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E500BF9A00A44F9EBE13AC61 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/native-base/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		E76640B7EE52412A9F757C08 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/native-base/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
@@ -104,7 +106,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6AAB33DC0917228ABA566498 /* libPods-rnPhoneAuthDemoTests.a in Frameworks */,
+				F6F2E805258B06B0E07C0E00 /* libPods-rnPhoneAuthDemoTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,7 +177,7 @@
 				D2213974C4BEF663ACC8BE4A /* libPods-rnPhoneAuthDemo.a */,
 				A387D169791088830CB17DFC /* libPods-rnPhoneAuthDemo-tvOS.a */,
 				50338496FF84AAF2F7B2A25F /* libPods-rnPhoneAuthDemo-tvOSTests.a */,
-				D6372B42A5142AFBF38DD496 /* libPods-rnPhoneAuthDemoTests.a */,
+				2D0C7B2C835254FF59BFFD8D /* libPods-rnPhoneAuthDemoTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -256,6 +258,8 @@
 				EE009533694C8B90921B71AE /* Pods-rnPhoneAuthDemo-tvOSTests.release.xcconfig */,
 				E195C805D953DFF734934455 /* Pods-rnPhoneAuthDemoTests.debug.xcconfig */,
 				21DB145422C4986E0DA0DCC0 /* Pods-rnPhoneAuthDemoTests.release.xcconfig */,
+				211B81A8B7A275654A6E219E /* Pods-rnPhoneAuthDemo-rnPhoneAuthDemoTests.debug.xcconfig */,
+				5908A99C9A04EA3FECDF843F /* Pods-rnPhoneAuthDemo-rnPhoneAuthDemoTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -560,6 +564,7 @@
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -579,6 +584,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

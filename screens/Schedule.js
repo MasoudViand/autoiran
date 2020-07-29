@@ -5,11 +5,13 @@ import {
   Text,
   View,
   StyleSheet,
+  Image,
 } from "react-native";
 //import moment from "moment";
 import style from "./css/styles";
 import "moment/min/locales";
 import moment from "jalali-moment";
+//import { IMG_DIR } from "../Constants";
 import {
   Grid,
   Row,
@@ -30,7 +32,13 @@ export default class Schedule extends Component {
       isLoading: true,
     };
   }
-
+  circuitImg = (id) => {
+    //require('../assets/img/circuits/')
+    imageName = id + ".png";
+    var url =
+      "http://autoiran.com/formula1/assets/circuits/" + imageName.toLowerCase();
+    return url;
+  };
   componentDidMount() {
     moment.locale("fa");
     fetch("https://ergast.com/api/f1/current.json")
@@ -63,17 +71,27 @@ export default class Schedule extends Component {
               <View style={{ paddingBottom: 15 }}>
                 <Grid>
                   <Row style={style.card}>
-                    <Col>
-                      <Text style={style.text}>مسابقه: {item.raceName}</Text>
-                      <Text style={style.text}>
+                    <Col size={35} style={{ backgroundColor: "#aaa" }}>
+                      <Image
+                        style={style.thumbnail}
+                        source={{
+                          uri: this.circuitImg(item.Circuit.circuitId),
+                        }}
+                      />
+                    </Col>
+                    <Col size={65} style={style.boxPadding}>
+                      <Text style={[style.text, { paddingBottom: 7 }]}>
+                        مسابقه: {item.raceName}
+                      </Text>
+                      <Text style={[style.text, { paddingBottom: 7 }]}>
                         تاریخ مسابقه: {this.farsiDate(item.date)}
+                      </Text>
+                      <Text style={[style.text, { paddingBottom: 7 }]}>
+                        مکان: {item.Circuit.Location.locality}(
+                        {item.Circuit.Location.country})
                       </Text>
                       <Text style={style.text}>
                         پیست: {item.Circuit.circuitName}
-                      </Text>
-                      <Text style={style.text}>
-                        مکان: {item.Circuit.Location.locality}(
-                        {item.Circuit.Location.country})
                       </Text>
                     </Col>
                   </Row>

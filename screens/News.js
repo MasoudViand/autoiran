@@ -93,60 +93,6 @@ class News extends Component {
               <Text>Read More</Text>
             </CardItem>
           </Card>
-          <Card>
-            <CardItem header>
-              <Text>NativeBase</Text>
-            </CardItem>
-            <CardItem cardBody>
-              <Image
-                source={{ uri: "https://picsum.photos/200" }}
-                style={{ height: 200, width: null, flex: 1 }}
-              />
-            </CardItem>
-            <CardItem>
-              <Body>
-                <Text>//Your text here</Text>
-              </Body>
-            </CardItem>
-            <CardItem
-              bordered
-              transparent
-              footer
-              button
-              onPress={() => alert("This is Card Footer")}
-            >
-              <Text>Read More</Text>
-            </CardItem>
-          </Card>
-          <Card>
-            <CardItem header>
-              <Text>NativeBase</Text>
-            </CardItem>
-            <CardItem cardBody>
-              <Image
-                source={{ uri: "https://picsum.photos/200" }}
-                style={{ height: 200, width: null, flex: 1 }}
-              />
-            </CardItem>
-            <CardItem>
-              <Body>
-                <Text>//Your text here</Text>
-              </Body>
-            </CardItem>
-            <CardItem
-              bordered
-              transparent
-              footer
-              button
-              onPress={() =>
-                this.navigate("SingleNews", {
-                  name: this.state.inputName || this.state.name,
-                })
-              }
-            >
-              <Text>Read More</Text>
-            </CardItem>
-          </Card>
         </Content>
       </Container>
     );

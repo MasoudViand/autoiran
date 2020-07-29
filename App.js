@@ -10,6 +10,7 @@ import Home from "./screens/Home";
 import SingleNews from "./screens/SingleNews";
 import Standing from "./screens/Standing";
 import Schedule from "./screens/Schedule";
+import Feed from "./screens/Feed";
 
 // function HomeScreen() {
 //   return <PhoneAuthScreen />;
@@ -24,7 +25,16 @@ function App() {
         <Stack.Screen
           name="Home"
           component={Home}
-          options={{ title: "Home" }}
+          options={{
+            title: "Home",
+            headerStyle: {
+              backgroundColor: "#ff6738",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
         />
         <Stack.Screen
           name="Login"
@@ -60,6 +70,22 @@ function App() {
           name="Schedule"
           component={Schedule}
           options={{ title: "Schedule" }}
+        />
+        <Stack.Screen
+          name="Feed"
+          component={Feed}
+          options={{
+            title: "Feed",
+            headerLeft: null,
+            animationEnabled: false,
+            headerStyle: {
+              backgroundColor: "#ff6738",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>
