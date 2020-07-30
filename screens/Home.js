@@ -285,7 +285,7 @@ class Home extends Component {
                     <Card>
                       <CardItem cardBody>
                         <Image
-                          source={{ uri: "https://picsum.photos/100" }}
+                          source={{ uri: "https://picsum.photos/300" }}
                           style={{ height: 200, width: null, flex: 1 }}
                         />
                       </CardItem>
@@ -317,33 +317,28 @@ class Home extends Component {
               <Button
                 style={{ backgroundColor: "#ff6738", borderRadius: 0 }}
                 active
-                onPress={() =>
-                  this.navigate("Home", {
-                    name: this.state.inputName || this.state.name,
-                  })
-                }
+                // onPress={() =>
+                //   this.navigate("Home", {
+                //     name: this.state.inputName || this.state.name,
+                //   })
+                // }
               >
                 <Icon
                   style={{ color: "#fff" }}
                   type="FontAwesome"
                   name="home"
                 />
-                <Text style={{ color: "#fff" }}>Main</Text>
+                <Text style={{ color: "#fff" }}>Feed</Text>
               </Button>
-
               <Button
-                style={{ backgroundColor: "tranparent" }}
-                vertical
-                badge
+                style={{ backgroundColor: "#ff6738", borderRadius: 0 }}
+                active
                 onPress={() =>
                   this.navigate("Feed", {
                     name: this.state.inputName || this.state.name,
                   })
                 }
               >
-                <Badge>
-                  <Text>7</Text>
-                </Badge>
                 <Icon
                   style={{ color: "#e1e1e1" }}
                   type="FontAwesome"

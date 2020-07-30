@@ -18,10 +18,10 @@ import {
   TouchableHighlight,
 } from "react-native";
 import style from "./css/styles";
-import { WebView } from "react-native-webview";
-import AutoHeightWebView from "react-native-autoheight-webview";
+// import { WebView } from "react-native-webview";
+// import AutoHeightWebView from "react-native-autoheight-webview";
 //import { firebase, auth, database } from "react-native-firebase";
-import Video from "react-native-video";
+// import Video from "react-native-video";
 import VideoPlayer from "react-native-video-controls";
 import { Container, Row, Grid, Col } from "native-base";
 import { ScrollView } from "react-native-gesture-handler";
