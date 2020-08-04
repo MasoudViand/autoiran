@@ -9,6 +9,7 @@ import {
   View,
   TextInput,
   Image,
+  StatusBar,
 } from "react-native";
 import {
   Container,
@@ -119,6 +120,10 @@ class Home extends Component {
   render() {
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: "#fff" }]}>
+        <StatusBar
+          backgroundColor="red"
+          barStyle="light-content" // Here is where you change the font-color
+        />
         <Container>
           <ScrollView style={{ padding: 10 }}>
             <Grid style={{ paddingBottom: 60 }}>
@@ -130,7 +135,7 @@ class Home extends Component {
                 </Col>
               </Row>
               <Row>
-                <Col>
+                <Col size={60}>
                   <TouchableOpacity
                     onPress={() =>
                       this.navigate("Schedule", {
@@ -165,42 +170,8 @@ class Home extends Component {
                     </Card>
                   </TouchableOpacity>
                 </Col>
-                <Col>
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.navigate("Chat", {
-                        name: this.state.inputName || this.state.name,
-                      })
-                    }
-                  >
-                    <Card>
-                      <CardItem cardBody>
-                        <Image
-                          source={require("../assets/img/live.jpg")}
-                          style={{ height: 200, width: null, flex: 1 }}
-                        />
-                      </CardItem>
-                      <CardItem bordered transparent footer>
-                        <Text
-                          numberOfLines={1}
-                          adjustsFontSizeToFit
-                          style={{
-                            flex: 1,
-                            writingDirection: "rtl",
-                            lineHeight: 25,
-                            fontFamily: "Shabnam-Medium",
-                            textAlign: "center",
-                            fontWeight: "400",
-                            color: "#222",
-                          }}
-                        >
-                          پخش زنده
-                        </Text>
-                      </CardItem>
-                    </Card>
-                  </TouchableOpacity>
-                </Col>
-                <Col>
+
+                <Col size={40}>
                   <TouchableOpacity
                     onPress={() =>
                       this.navigate("Standing", {
@@ -237,7 +208,42 @@ class Home extends Component {
                 </Col>
               </Row>
               <Row>
-                <Col>
+                <Col size={40}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.navigate("Chat", {
+                        name: this.state.inputName || this.state.name,
+                      })
+                    }
+                  >
+                    <Card>
+                      <CardItem cardBody>
+                        <Image
+                          source={require("../assets/img/live.jpg")}
+                          style={{ height: 200, width: null, flex: 1 }}
+                        />
+                      </CardItem>
+                      <CardItem bordered transparent footer>
+                        <Text
+                          numberOfLines={1}
+                          adjustsFontSizeToFit
+                          style={{
+                            flex: 1,
+                            writingDirection: "rtl",
+                            lineHeight: 25,
+                            fontFamily: "Shabnam-Medium",
+                            textAlign: "center",
+                            fontWeight: "400",
+                            color: "#222",
+                          }}
+                        >
+                          پخش زنده
+                        </Text>
+                      </CardItem>
+                    </Card>
+                  </TouchableOpacity>
+                </Col>
+                <Col size={60}>
                   <TouchableOpacity
                     onPress={() =>
                       this.navigate("News", {
@@ -328,7 +334,7 @@ class Home extends Component {
                   type="FontAwesome"
                   name="home"
                 />
-                <Text style={{ color: "#fff" }}>Feed</Text>
+                <Text style={{ color: "#fff" }}>Home</Text>
               </Button>
               <Button
                 style={{ backgroundColor: "#ff6738", borderRadius: 0 }}

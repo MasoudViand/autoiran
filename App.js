@@ -12,8 +12,9 @@ import Standing from "./screens/Standing";
 import Schedule from "./screens/Schedule";
 import Feed from "./screens/Feed";
 import AddFeed from "./screens/AddFeed";
+import FeedSingle from "./screens/FeedSingle";
 //import { Button } from "react-native";
-import { Button, Icon, Text, Root } from "native-base";
+import { Button, Icon, Text, Root, StatusBar } from "native-base";
 
 const Stack = createStackNavigator();
 
@@ -21,19 +22,23 @@ function App() {
   return (
     <Root>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator
+          initialRouteName="Home"
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: "#f4511e",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
+        >
           <Stack.Screen
             name="Home"
             component={Home}
             options={{
               title: "Home",
-              headerStyle: {
-                backgroundColor: "#ff6738",
-              },
-              headerTintColor: "#fff",
-              headerTitleStyle: {
-                fontWeight: "bold",
-              },
             }}
           />
           <Stack.Screen
@@ -78,13 +83,6 @@ function App() {
               title: null,
               headerLeft: null,
               animationEnabled: false,
-              headerStyle: {
-                backgroundColor: "#ff6738",
-              },
-              headerTintColor: "#fff",
-              headerTitleStyle: {
-                fontWeight: "bold",
-              },
 
               headerRight: () => (
                 <Button
@@ -128,6 +126,11 @@ function App() {
             name="AddFeed"
             component={AddFeed}
             options={{ title: "Add Post" }}
+          />
+          <Stack.Screen
+            name="FeedSingle"
+            component={FeedSingle}
+            options={{ title: null }}
           />
         </Stack.Navigator>
       </NavigationContainer>

@@ -14,7 +14,7 @@ import ImagePicker from "react-native-image-picker";
 import firebase from "@react-native-firebase/app";
 import firestore from "@react-native-firebase/firestore";
 import storage from "@react-native-firebase/storage";
-
+import { like } from "./inc";
 import uuid from "uuid";
 import style from "./css/styles";
 import {
@@ -41,7 +41,7 @@ class AddPost extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userId: null,
+      user: { userId: null, userName: null, userAvatar: null },
       image: null,
       uploadedImg: null,
       description: "",
@@ -52,16 +52,28 @@ class AddPost extends Component {
   }
   componentDidMount() {
     if (firebase.auth().currentUser) {
-      let userId = firebase.auth().currentUser.uid;
-      this.setState({ userId: userId, isLogged: true });
+      this.getUserData();
     }
   }
+  getUserData = async () => {
+    let userId = firebase.auth().currentUser.uid;
+    //var name;
+    var ref = firebase.database().ref("users/" + userId);
+    await ref.once("value").then((snapshot) => {
+      var name = snapshot.val().Name;
+      var avatar = snapshot.val().Avatar;
+      this.setState({
+        user: { userId: userId, userName: name, userAvatar: avatar },
+        isLogged: true,
+      });
+    });
+  };
   onChangeDescription = (description) => {
     this.setState({ description });
   };
 
   selectImage = () => {
-    this.setState({ isLoading: true });
+    // this.setState({ isLoading: true });
     const options = {
       //noData: true,
       mediaType: "photo",
@@ -84,13 +96,13 @@ class AddPost extends Component {
         const source = { uri: response.uri };
         this.setState({
           image: source,
-          isLoading: false,
+          // isLoading: false,
         });
       }
     });
   };
   onSubmit = async () => {
-    let userId = this.state.userId;
+    let userId = this.state.user.userId;
     if (userId) {
       this.setState({ isLoading: true });
       const id = uuid.v4();
@@ -106,11 +118,11 @@ class AddPost extends Component {
           }
           const uploadData = {
             id: id,
-            userId: userId,
+            user: this.state.user,
             postPhoto: url ? url : null,
             postDescription: this.state.description,
-            likes: [],
-            comments: [],
+            // likes: [],
+            // comments: [],
             createdAt: time,
           };
           firebase
@@ -126,11 +138,11 @@ class AddPost extends Component {
               });
               Toast.show({
                 text: "پست شما با موفقیت ارسال شد",
-                buttonText: "باشه",
+                //buttonText: "باشه",
                 type: "success",
               });
               //alert("success");
-              this.navigate("Feed");
+              this.props.navigation.push("Feed");
             });
         } catch (error) {
           this.setState({ isLoading: false });
@@ -143,14 +155,14 @@ class AddPost extends Component {
       }
     } else {
       this.setState({ isLoading: false });
-      alert("Please Login again");
+      alert("لطفا دوباره وارد شوید");
     }
   };
   render() {
     const { isLoading, isLogged } = this.state;
     return (
       <Container>
-        {isLoading ? <ActivityIndicator /> : null}
+        {isLoading ? <ActivityIndicator size="large" /> : null}
         <Content padder>
           {isLogged ? (
             <View>

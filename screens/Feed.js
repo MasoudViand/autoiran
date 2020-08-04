@@ -3,8 +3,10 @@ import auth from "@react-native-firebase/auth";
 import firebase from "@react-native-firebase/app";
 import firestore from "@react-native-firebase/firestore";
 import storage from "@react-native-firebase/storage";
+import database from "@react-native-firebase/database";
 import _ from "lodash";
 import React, { Component } from "react";
+import { like, likeSize, getComments } from "./inc";
 import {
   View,
   Keyboard,
@@ -42,6 +44,7 @@ import {
   Input,
   Textarea,
   Item,
+  Toast,
 } from "native-base";
 import { NavigationEvents } from "react-navigation";
 import moment from "jalali-moment";
@@ -50,18 +53,39 @@ class Feed extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      user: { userId: null, userName: null, userAvatar: null },
       DATA: null,
       isRefreshing: false,
       isLoading: false,
+      limit: 4,
+      lastVisible: null,
+      loading: false,
     };
     this.navigate = this.props.navigation.navigate;
   }
   async componentDidMount() {
-    //moment.locale("fa");
+    if (firebase.auth().currentUser) {
+      await this.getUserData();
+    }
     this.setState({ isLoading: true });
     await this.fetchPosts();
+    console.log("post done");
     this.setState({ isLoading: false });
   }
+  getUserData = async () => {
+    let userId = firebase.auth().currentUser.uid;
+    //var name;
+    var ref = firebase.database().ref("users/" + userId);
+    await ref.once("value").then((snapshot) => {
+      var name = snapshot.val().Name;
+      var avatar = snapshot.val().Avatar;
+      this.setState({
+        user: { userId: userId, userName: name, userAvatar: avatar },
+        isLogged: true,
+      });
+      // console.log(this.state.user);
+    });
+  };
   fetchPosts = async () => {
     this.setState({ isRefreshing: true });
     try {
@@ -69,47 +93,103 @@ class Feed extends Component {
         .firestore()
         .collection("posts")
         .orderBy("createdAt", "desc")
+        .limit(this.state.limit)
+        // .startAfter(this.state.lastVisible || "")
         .get()
         .then(function(querySnapshot) {
           let posts = querySnapshot.docs.map((doc) => doc.data());
-          // console.log(posts)//.orderBy("createdAt", "desc")
           return posts;
-        })
-        .catch(function(error) {
-          console.log("Error getting documents: ", error);
         });
-      //console.log(posts);
-      this.setState({ DATA: posts, isRefreshing: false });
-      //get userdata
-      try {
-        if (this.state.DATA) {
-          let data = posts;
-          for (let index = 0; index < data.length; index++) {
-            let userId = data[index].userId;
-            var name;
-            var ref = firebase.database().ref("users/" + userId + "/Name");
-            ref.once("value").then((snapshot) => {
-              name = snapshot.val();
-              this.state.DATA[index].username = name;
-              // let items = [...posts];
-              // let item = {
-              //   ...items[index],
-              //   username: name,
-              // };
-              // items[1] = item;
-              this.setState({ isRefreshing: false });
-            });
-          }
-        }
-      } catch (e) {
-        console.error(e);
+      if (posts.length > 0) {
+        posts.map(async (item, index) => {
+          const postId = item.id;
+          var likeCount = await likeSize(postId, this.state.user.userId);
+          item.likes = likeCount;
+          //end add likes
+          var comment = await getComments(postId);
+          item.comments = comment;
+          this.setState({ isLoading: false });
+          return item;
+        });
+
+        //console.log(posts);
+        let lastVisible = posts[posts.length - 1].createdAt;
+        //console.log(lastVisible); //.orderBy("createdAt", "desc")
+        this.setState({
+          DATA: posts,
+          // DATA: this.state.DATA ? [...this.state.DATA, ...posts] : posts,
+          lastVisible: lastVisible,
+        });
       }
-    } catch (e) {
-      console.error(e);
+      this.setState({
+        isRefreshing: false,
+      });
+    } catch (error) {
+      console.log(error);
+      this.setState({
+        isRefreshing: false,
+      });
+    }
+  };
+  // Retrieve More
+  retrieveMore = async () => {
+    try {
+      console.log("Retrieving additional Data");
+      // Cloud Firestore: Query (Additional Query)
+      let additionalQuery = await firebase
+        .firestore()
+        .collection("posts")
+        .orderBy("createdAt", "desc")
+        .limit(this.state.limit)
+        .startAfter(this.state.lastVisible)
+        .get()
+        .then(function(querySnapshot) {
+          let posts = querySnapshot.docs.map((doc) => doc.data());
+          return posts;
+        });
+      if (additionalQuery.length > 0) {
+        additionalQuery.map(async (item, index) => {
+          const postId = item.id;
+          var likeCount = await likeSize(postId, this.state.user.userId);
+          item.likes = likeCount;
+          //end add likes
+          var comment = await getComments(postId);
+          item.comments = comment;
+          this.setState({ isLoading: false });
+          return item;
+        });
+
+        let lastVisible = additionalQuery[additionalQuery.length - 1].createdAt;
+        //Set State
+        this.setState({
+          DATA: [...this.state.DATA, ...additionalQuery],
+          lastVisible: lastVisible,
+          isRefreshing: false,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      this.setState({
+        isRefreshing: false,
+      });
+    }
+  };
+  // Render Footer
+  renderFooter = () => {
+    try {
+      // Check If Loading
+      if (this.state.isRefreshing) {
+        return (
+          <ActivityIndicator size="large" style={{ paddingVertical: 20 }} />
+        );
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
   onRefresh = () => {
-    this.setState({ isRefreshing: true });
     this.fetchPosts();
   };
   getUsername = (userId) => {
@@ -125,52 +205,84 @@ class Feed extends Component {
       }
       this.setState({ DATA: data });
     });
-    console.log(name);
     //return returnArray;
   };
+  likefunc = async (userId, postId, index) => {
+    try {
+      like(userId, postId);
+      let data = this.state.DATA[index];
+      this.state.DATA[index].likes = data.likes.liked
+        ? { count: data.likes.count - 1, liked: false }
+        : { count: data.likes.count + 1, liked: true };
+      this.setState({ isLoading: false });
+    } catch (error) {
+      alert("خطا!");
+    }
+  };
   farsiDate = (date) => {
+    let b = moment.unix(date);
+    let a = moment();
+    let diff = a.diff(b, "hours");
     let shamsi = moment
       .unix(date)
       .locale("fa")
-      .format("D MMMM YYYY, HH:mm");
+      .fromNow();
+    if (diff > 24) {
+      // alert("1");
+      shamsi = moment
+        .unix(date)
+        .locale("fa")
+        .format("D MMMM YYYY, HH:mm");
+    } else {
+      // alert("2");
+      shamsi = moment
+        .unix(date)
+        .locale("fa")
+        .fromNow();
+    }
+
     return shamsi;
   };
   render() {
     const { DATA, isRefreshing, isLoading } = this.state;
 
-    const renderItem = ({ item }) => (
+    const renderItem = ({ item, index }) => (
       <Row>
         <Col>
-          <TouchableOpacity
-            onPress={() =>
-              this.navigate("SingleNews", {
-                //name: this.state.inputName || this.state.name,
-              })
-            }
-          >
-            <Card>
-              <CardItem header>
-                <Left style={{ flexDirection: "row-reverse" }}>
-                  <Thumbnail
-                    source={{
-                      uri: item.avatarURI || "https://picsum.photos/50",
-                    }}
-                  />
-                  <Body
-                    style={{
-                      alignItems: "flex-end",
-                    }}
-                  >
-                    <Text style={[style.text, { paddingRight: 20 }]}>
-                      {item.username}
-                    </Text>
-                    <Text style={[style.text, { color: "#888" }]} note>
-                      {this.farsiDate(item.createdAt)}
-                    </Text>
-                  </Body>
-                </Left>
-              </CardItem>
-              {item.postPhoto ? (
+          <Card>
+            <CardItem header>
+              <Left style={{ flexDirection: "row-reverse" }}>
+                <Thumbnail
+                  source={{
+                    uri: item.user.userAvatar
+                      ? item.user.userAvatar
+                      : `https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${
+                          item.user.userName
+                        }`,
+                  }}
+                />
+                <Body
+                  style={{
+                    alignItems: "flex-end",
+                  }}
+                >
+                  <Text style={[style.text, { paddingRight: 20 }]}>
+                    {item.user.userName}
+                  </Text>
+                  <Text style={[style.text, { color: "#888" }]} note>
+                    {this.farsiDate(item.createdAt)}
+                  </Text>
+                </Body>
+              </Left>
+            </CardItem>
+            {item.postPhoto ? (
+              <TouchableOpacity
+                onPress={() =>
+                  this.navigate("FeedSingle", {
+                    postId: item.id,
+                  })
+                }
+              >
                 <CardItem cardBody>
                   <View style={{ flexDirection: "row" }}>
                     <Image
@@ -183,7 +295,15 @@ class Feed extends Component {
                     />
                   </View>
                 </CardItem>
-              ) : null}
+              </TouchableOpacity>
+            ) : null}
+            <TouchableOpacity
+              onPress={() =>
+                this.navigate("FeedSingle", {
+                  postId: item.id,
+                })
+              }
+            >
               <CardItem>
                 <Body
                   style={{
@@ -195,14 +315,21 @@ class Feed extends Component {
                   </Text>
                 </Body>
               </CardItem>
-              <CardItem
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                }}
-                bordered
-                transparent
-                footer
+            </TouchableOpacity>
+
+            <CardItem
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-around",
+              }}
+              bordered
+              transparent
+              footer
+            >
+              <TouchableOpacity
+                onPress={() =>
+                  this.likefunc(this.state.user.userId, item.id, index)
+                }
               >
                 <View>
                   <Icon
@@ -211,44 +338,47 @@ class Feed extends Component {
                       textAlign: "center",
                     }}
                     type="FontAwesome"
-                    name="heart"
-                    //name="heart-o"
+                    name={item.likes && item.likes.liked ? "heart" : "heart-o"}
+                    //name="heart"
                   />
                   <Text style={{ color: "#999", textAlign: "center" }} note>
-                    {item.likes.length}
+                    {item.likes ? item.likes.count : ""}
                   </Text>
                 </View>
-                <View>
-                  <Icon
-                    style={{ color: "#777", textAlign: "center" }}
-                    type="FontAwesome"
-                    name="comments-o"
-                    //name="comments"
-                  />
-                  <Text style={{ color: "#999", textAlign: "center" }} note>
-                    {item.comments.length}
-                  </Text>
-                </View>
-              </CardItem>
-            </Card>
-          </TouchableOpacity>
+              </TouchableOpacity>
+
+              <View>
+                <Icon
+                  style={{ color: "#777", textAlign: "center" }}
+                  type="FontAwesome"
+                  name="comments-o"
+                  //name="comments"
+                />
+                <Text style={{ color: "#999", textAlign: "center" }} note>
+                  {item.comments ? item.comments.count : ""}
+                </Text>
+              </View>
+            </CardItem>
+          </Card>
         </Col>
       </Row>
     );
     return (
       <SafeAreaView style={[style.container, { backgroundColor: "#fff" }]}>
         <Container>
-          {isLoading ? (
+          {/* {isLoading ? (
             <ActivityIndicator size="large" style={{ paddingVertical: 20 }} />
-          ) : null}
+          ) : null} */}
           {/* <ScrollView style={{ padding: 10 }}> */}
           <Grid>
             <FlatList
-              //style={this.props.themedStyle.container}
               data={DATA}
-              keyExtractor={(item) => uuid.v4()}
+              keyExtractor={(item) => item.id}
               showsVerticalScrollIndicator={false}
               renderItem={renderItem}
+              // ListFooterComponent={this.renderFooter}
+              onEndReached={this.retrieveMore}
+              onEndReachedThreshold={0.5}
               refreshing={isRefreshing}
               onRefresh={() => this.onRefresh()}
             />
@@ -270,7 +400,7 @@ class Feed extends Component {
                   type="FontAwesome"
                   name="home"
                 />
-                <Text style={{ color: "#e1e1e1" }}>Main</Text>
+                <Text style={{ color: "#e1e1e1" }}>Home</Text>
               </Button>
               <Button
                 style={{ backgroundColor: "tranparent", borderWidth: 0 }}
