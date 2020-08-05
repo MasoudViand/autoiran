@@ -140,6 +140,7 @@ class AddPost extends Component {
                 text: "پست شما با موفقیت ارسال شد",
                 //buttonText: "باشه",
                 type: "success",
+                textStyle: style.toasttext,
               });
               //alert("success");
               this.props.navigation.push("Feed");

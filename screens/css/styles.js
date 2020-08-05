@@ -11,6 +11,11 @@ export default (style = StyleSheet.create({
     textAlign: "right",
     writingDirection: "rtl",
   },
+  toasttext: {
+    fontFamily: "Shabnam",
+    textAlign: "right",
+    writingDirection: "rtl",
+  },
   card: {
     backgroundColor: "#fff",
     // paddingVertical: 12,

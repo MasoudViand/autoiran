@@ -12,7 +12,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import firebase from "@react-native-firebase/app";
-import { farsiDate, likeSize, like, getComments } from "./inc";
+import { farsiDate, likeSize, like, getComments, addComment } from "./inc";
 import style from "./css/styles";
 //import { Card, SimpleCard } from "@paraboly/react-native-card";
 import {
@@ -32,9 +32,15 @@ import {
   Input,
   Form,
   Item,
+  Grid,
+  Row,
+  Col,
+  Textarea,
+  FlatList,
 } from "native-base";
 import { ScrollView } from "react-native-gesture-handler";
-
+import moment from "moment";
+import uuid from "uuid";
 class FeedSingle extends Component {
   constructor(props) {
     super(props);
@@ -46,6 +52,7 @@ class FeedSingle extends Component {
       user: [],
       isLogged: false,
       isLoading: false,
+      commentText: "",
     };
     this.navigate = this.props.navigation.navigate;
   }
@@ -70,6 +77,7 @@ class FeedSingle extends Component {
       });
     });
   };
+
   getPost = async (postId) => {
     try {
       const post = await firebase
@@ -109,60 +117,164 @@ class FeedSingle extends Component {
       alert("خطا!");
     }
   };
+  onChangeCommentText = (commentText) => {
+    this.setState({ commentText });
+  };
+  commentList = () => {
+    let comments = this.state.post.comments.comments;
+    console.log(comments);
+    return comments.map((item) => {
+      return (
+        <View
+          key={item.commentId}
+          style={{
+            //flex: 1,
+            // flexDirection: "row-reverse",
+            paddingVertical: 15,
+            width: "100%",
+          }}
+        >
+          <Text style={[style.text, { color: "#666", fontWeight: "bold" }]}>
+            {item.user.userName}
+          </Text>
+
+          <Text
+            style={[
+              style.text,
+              { color: "#666", fontWeight: "300", lineHeight: 26 },
+            ]}
+          >
+            {item.text}
+          </Text>
+          <Text
+            style={[
+              style.text,
+              {
+                color: "#666",
+                fontWeight: "200",
+                fontSize: 12,
+                paddingLeft: 7,
+                alignItems: "center",
+              },
+            ]}
+          >
+            {farsiDate(item.date)}
+          </Text>
+        </View>
+      );
+    });
+  };
+  // addComment = (userId, postId, text) => {
+
+  // }
   render() {
     const { post, isLoading } = this.state;
     const item = post;
     const postuser = post.user;
+    const renderItem = ({ item }) => <Text>{item.text}</Text>;
     return (
-      <Container>
-        {/* <Header /> */}
-        <Content contentContainerStyle={{ flex: 1 }} scrollEnabled={false}>
-          <ScrollView>
-            <Card style={{ flex: 1 }}>
-              <CardItem header>
-                <Left style={{ flexDirection: "row-reverse" }}>
-                  <Thumbnail
-                    source={{
-                      uri:
-                        postuser && postuser.userAvatar != null
-                          ? postuser.userAvatar
-                          : `https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${
-                              postuser ? postuser.userName : ""
-                            }`,
+      <SafeAreaView style={{ flex: 1 }}>
+        <Container>
+          {/* <Header /> */}
+          <Content contentContainerStyle={{ flex: 1 }} scrollEnabled={false}>
+            <ScrollView>
+              <Card style={{ flex: 1 }}>
+                <CardItem header>
+                  <Left style={{ flexDirection: "row-reverse" }}>
+                    <Thumbnail
+                      source={{
+                        uri:
+                          postuser && postuser.userAvatar != null
+                            ? postuser.userAvatar
+                            : `https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${
+                                postuser ? postuser.userName : ""
+                              }`,
+                      }}
+                    />
+                    <Body
+                      style={{
+                        alignItems: "flex-end",
+                      }}
+                    >
+                      <Text style={[style.text, { paddingRight: 20 }]}>
+                        {postuser ? postuser.userName : ""}
+                      </Text>
+                      <Text style={[style.text, { color: "#888" }]} note>
+                        {item.createdAt ? farsiDate(item.createdAt) : ""}
+                      </Text>
+                    </Body>
+                  </Left>
+                </CardItem>
+
+                <CardItem cardBody>
+                  {/* <Body> */}
+                  <Image
+                    source={{ uri: item.postPhoto }}
+                    style={{
+                      height: undefined,
+                      width: "100%",
+                      aspectRatio: 1.3,
+                      resizeMode: "cover",
                     }}
                   />
-                  <Body
+
+                  {/* </Body> */}
+                </CardItem>
+                <TouchableOpacity
+                  onPress={() => this.likefunc(this.state.user.userId, item.id)}
+                >
+                  <CardItem>
+                    <View
+                      style={{
+                        justifyContent: "flex-end",
+                        flexDirection: "row",
+                        alignItems: "baseline",
+                        flex: 1,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontFamily: "Shabnam-Light",
+                          fontSize: 12,
+                          color: "#666",
+                        }}
+                      >
+                        {item.likes && item.likes.count > 0
+                          ? item.likes.count +
+                            " " +
+                            "بار این پست پسندیده شده است"
+                          : "تا کنون کسی این پست را نپسندیده است"}
+                      </Text>
+                      <Icon
+                        style={{
+                          color: "#777",
+                          paddingLeft: 7,
+                          fontSize: 20,
+                        }}
+                        type="FontAwesome"
+                        name={
+                          item.likes && item.likes.liked ? "heart" : "heart-o"
+                        }
+                      />
+                    </View>
+                  </CardItem>
+                </TouchableOpacity>
+                <CardItem>
+                  <Text
                     style={{
-                      alignItems: "flex-end",
+                      writingDirection: "rtl",
+                      textAlign: "justify",
+                      paddingTop: 5,
+                      lineHeight: 26,
+                      fontFamily: "Shabnam-Light",
+                      textAlign: "right",
+                      flex: 1,
                     }}
                   >
-                    <Text style={[style.text, { paddingRight: 20 }]}>
-                      {postuser ? postuser.userName : ""}
-                    </Text>
-                    <Text style={[style.text, { color: "#888" }]} note>
-                      {item.createdAt ? farsiDate(item.createdAt) : ""}
-                    </Text>
-                  </Body>
-                </Left>
-              </CardItem>
+                    {item.postDescription}
+                  </Text>
+                </CardItem>
 
-              <CardItem cardBody>
-                {/* <Body> */}
-                <Image
-                  source={{ uri: item.postPhoto }}
-                  style={{
-                    height: undefined,
-                    width: "100%",
-                    aspectRatio: 1.3,
-                    resizeMode: "cover",
-                  }}
-                />
-
-                {/* </Body> */}
-              </CardItem>
-              <TouchableOpacity
-                onPress={() => this.likefunc(this.state.user.userId, item.id)}
-              >
                 <CardItem>
                   <View
                     style={{
@@ -179,9 +291,11 @@ class FeedSingle extends Component {
                         color: "#666",
                       }}
                     >
-                      {item.likes && item.likes.count > 0
-                        ? item.likes.count + " " + "بار این پست پسندیده شده است"
-                        : "تا کنون کسی این پست را نپسندیده است"}
+                      {item.comments && item.comments.count > 0
+                        ? item.comments.count +
+                          " " +
+                          "پاسخ برای این پست ارسال شده است"
+                        : "تا کنون پاسخی به این پست ارسال نشده است"}
                     </Text>
                     <Icon
                       style={{
@@ -190,95 +304,107 @@ class FeedSingle extends Component {
                         fontSize: 20,
                       }}
                       type="FontAwesome"
-                      name={
-                        item.likes && item.likes.liked ? "heart" : "heart-o"
-                      }
+                      name="comments-o"
                       //name="comments"
                     />
                   </View>
                 </CardItem>
-              </TouchableOpacity>
-              <CardItem>
-                <Text
-                  style={{
-                    writingDirection: "rtl",
-                    textAlign: "justify",
-                    paddingTop: 5,
-                    lineHeight: 26,
-                    fontFamily: "Shabnam-Light",
-                  }}
-                >
-                  {item.postDescription}
-                </Text>
-              </CardItem>
-
-              <CardItem>
-                <View
-                  style={{
-                    justifyContent: "flex-end",
-                    flexDirection: "row",
-                    alignItems: "baseline",
-                    flex: 1,
-                  }}
-                >
-                  <Text
+                <CardItem>
+                  <Body>
+                    {/* <View style={{ flex: 1 }}> */}
+                    {item.comments && item.comments.count > 0
+                      ? this.commentList()
+                      : null}
+                    {/* </View> */}
+                  </Body>
+                </CardItem>
+              </Card>
+            </ScrollView>
+            <Footer
+              style={{
+                flexDirection: "row-reverse",
+                backgroundColor: "transparent",
+                borderTopWidth: 0,
+                paddingHorizontal: 7,
+                paddingBottom: 0,
+                elevation: 0,
+                height: 90,
+                width: "100%",
+              }}
+            >
+              <View style={{ flex: 1 }}>
+                <Item regular>
+                  <TouchableOpacity
                     style={{
-                      fontFamily: "Shabnam-Light",
-                      fontSize: 12,
-                      color: "#666",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      //height: 90,
+                    }}
+                    onPress={() => {
+                      addComment(
+                        this.state.user,
+                        item.id,
+                        this.state.commentText
+                      );
+                      item.comments.count = item.comments.count + 1;
+                      item.comments.comments.push({
+                        commentId: uuid.v4(),
+                        date: moment().unix(),
+                        text: this.state.commentText,
+                        user: this.state.user,
+                      });
+
+                      this.setState({
+                        commentText: "",
+                      });
+                      Keyboard.dismiss();
                     }}
                   >
-                    {item.comments && item.comments.count > 0
-                      ? item.comments.count +
-                        " " +
-                        "پاسخ برای این پست ارسال شده است"
-                      : "تا کنون پاسخی به این پست ارسال نشده است"}
-                  </Text>
-                  <Icon
+                    <Icon
+                      type="FontAwesome"
+                      active
+                      name="send"
+                      style={{ color: "#119ccf" }}
+                    />
+                  </TouchableOpacity>
+                  <Textarea
                     style={{
-                      color: "#777",
-                      paddingLeft: 7,
-                      fontSize: 20,
+                      flex: 1,
+                      lineHeight: 26,
+                      fontSize: 15,
+                      fontFamily: "Shabnam-Light",
+                      textAlign: "right",
+                      padding: 5,
+                      height: 80,
                     }}
-                    type="FontAwesome"
-                    name="comments-o"
-                    //name="comments"
+                    multiline={true}
+                    placeholder="ارسال نظر"
+                    value={this.state.commentText}
+                    onChangeText={(commentText) =>
+                      this.onChangeCommentText(commentText)
+                    }
                   />
-                </View>
-              </CardItem>
-            </Card>
-          </ScrollView>
-          <Footer>
-            <View>
-              <Input
-                style={{
-                  flex: 1,
-                  lineHeight: 26,
-                  fontSize: 18,
-                  fontFamily: "Shabnam-Light",
-                  justifyContent: "flex-end",
-                }}
-                placeholder="ارسال نظر"
-              />
-            </View>
-          </Footer>
-        </Content>
-        {isLoading ? (
-          <ActivityIndicator
-            style={{
-              position: "absolute",
-              left: 0,
-              right: 0,
-              top: 0,
-              bottom: 0,
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "#e1e1e1",
-            }}
-            size="large"
-          />
-        ) : null}
-      </Container>
+                </Item>
+              </View>
+            </Footer>
+          </Content>
+          {isLoading ? (
+            <ActivityIndicator
+              style={{
+                position: "absolute",
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0,
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: "#e1e1e1",
+              }}
+              size="large"
+            />
+          ) : null}
+        </Container>
+      </SafeAreaView>
     );
   }
 }

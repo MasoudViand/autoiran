@@ -46,7 +46,7 @@ import {
   Item,
   Toast,
 } from "native-base";
-import { NavigationEvents } from "react-navigation";
+//import { NavigationEvents } from "@react-navigation/native";
 import moment from "jalali-moment";
 import "moment/min/locales";
 class Feed extends Component {
@@ -57,7 +57,7 @@ class Feed extends Component {
       DATA: null,
       isRefreshing: false,
       isLoading: false,
-      limit: 4,
+      limit: 15,
       lastVisible: null,
       loading: false,
     };
@@ -114,10 +114,8 @@ class Feed extends Component {
 
         //console.log(posts);
         let lastVisible = posts[posts.length - 1].createdAt;
-        //console.log(lastVisible); //.orderBy("createdAt", "desc")
         this.setState({
           DATA: posts,
-          // DATA: this.state.DATA ? [...this.state.DATA, ...posts] : posts,
           lastVisible: lastVisible,
         });
       }
@@ -191,21 +189,6 @@ class Feed extends Component {
   };
   onRefresh = () => {
     this.fetchPosts();
-  };
-  getUsername = (userId) => {
-    var name;
-    var ref = firebase.database().ref("users/" + userId + "/Name");
-    ref.once("value").then((snapshot) => {
-      name = snapshot.val();
-      let data = this.state.DATA;
-      for (let index = 0; index < data.length; index++) {
-        if (data[index].userId == userId) {
-          data[index].username = name;
-        }
-      }
-      this.setState({ DATA: data });
-    });
-    //return returnArray;
   };
   likefunc = async (userId, postId, index) => {
     try {
@@ -291,7 +274,7 @@ class Feed extends Component {
                         flex: 1,
                         aspectRatio: 1.3, // Your aspect ratio
                       }}
-                      resizeMode={"contain"}
+                      resizeMode={"cover"}
                     />
                   </View>
                 </CardItem>
@@ -387,8 +370,10 @@ class Feed extends Component {
           <Footer>
             <FooterTab style={{ backgroundColor: "#fc764c" }}>
               <Button
-                style={{ backgroundColor: "tranparent", borderWidth: 0 }}
-                active
+                style={{
+                  //backgroundColor: "blue",
+                  borderWidth: 0,
+                }}
                 onPress={() =>
                   this.navigate("Home", {
                     name: this.state.inputName || this.state.name,
@@ -402,9 +387,14 @@ class Feed extends Component {
                 />
                 <Text style={{ color: "#e1e1e1" }}>Home</Text>
               </Button>
+            </FooterTab>
+            <FooterTab style={{ backgroundColor: "#fc764c" }}>
               <Button
-                style={{ backgroundColor: "tranparent", borderWidth: 0 }}
-                active
+                style={{
+                  //backgroundColor: "blue",
+                  borderWidth: 0,
+                }}
+
                 // onPress={() =>
                 //   this.navigate("Home", {
                 //     name: this.state.inputName || this.state.name,

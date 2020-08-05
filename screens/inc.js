@@ -3,6 +3,8 @@ import { Toast } from "native-base";
 import uuid from "uuid";
 import moment from "jalali-moment";
 import "moment/min/locales";
+import { Keyboard } from "react-native";
+import style from "./css/styles";
 export const like = async (userId, postId) => {
   let updateObj = {
     users: firebase.firestore.FieldValue.arrayUnion(userId),
@@ -12,17 +14,19 @@ export const like = async (userId, postId) => {
       .firestore()
       .collection("likes")
       .doc(postId)
-      .set(updateObj, { merge: true })
-      .then(
-        Toast.show({
-          text: "Liked!",
-          type: "success",
-        })
-      );
+      .set(updateObj, { merge: true });
+    // .then(
+    //   Toast.show({
+    //     text: "لایک شما ثبت شد",
+    //     type: "success",
+    //     textStyle: style.toasttext,
+    //   })
+    // );
   } catch (error) {
     Toast.show({
       text: "خطایی رخ داد",
       type: "danger",
+      textStyle: style.toasttext,
     });
     console.log(error);
   }
@@ -54,37 +58,47 @@ export const likeSize = async (postId, userId) => {
     Toast.show({
       text: "خطایی رخ داد",
       type: "danger",
+      textStyle: style.toasttext,
     });
   }
 };
 
-export const addComment = async (userId, postId, text) => {
-  const id = uuid.v4();
-  const time = moment().unix();
-  comment = {
-    commentId: id,
-    userId: userId,
-    text: text,
-    date: time,
-  };
-  let updateObj = {
-    users: firebase.firestore.FieldValue.arrayUnion(comment),
-  };
-  try {
-    await firebase
-      .firestore()
-      .collection("comments")
-      .doc(postId)
-      //.set(updateObj, { merge: true })
-      .set(updateObj)
-      .then(
-        Toast.show({
-          text: "Posted!",
-          type: "success",
-        })
-      );
-  } catch (error) {
-    console.log(error);
+export const addComment = async (user, postId, text) => {
+  if (text) {
+    const id = uuid.v4();
+    const time = moment().unix();
+    let comment = {
+      commentId: id,
+      user: user,
+      text: text,
+      date: time,
+    };
+    let updateObj = {
+      comments: firebase.firestore.FieldValue.arrayUnion(comment),
+    };
+    try {
+      await firebase
+        .firestore()
+        .collection("comments")
+        .doc(postId)
+        .set(updateObj, { merge: true })
+        //.set(updateObj)
+        .then(
+          Toast.show({
+            text: "نظر شما ثبت شد",
+            type: "success",
+            textStyle: style.toasttext,
+          })
+        );
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    Toast.show({
+      text: "لطفا متن خود را وارد کنید",
+      type: "danger",
+      textStyle: style.toasttext,
+    });
   }
 };
 
