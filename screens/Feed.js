@@ -69,7 +69,6 @@ class Feed extends Component {
     }
     this.setState({ isLoading: true });
     await this.fetchPosts();
-    console.log("post done");
     this.setState({ isLoading: false });
   }
   getUserData = async () => {

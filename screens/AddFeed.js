@@ -14,7 +14,6 @@ import ImagePicker from "react-native-image-picker";
 import firebase from "@react-native-firebase/app";
 import firestore from "@react-native-firebase/firestore";
 import storage from "@react-native-firebase/storage";
-import { like } from "./inc";
 import uuid from "uuid";
 import style from "./css/styles";
 import {

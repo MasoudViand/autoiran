@@ -122,7 +122,7 @@ class FeedSingle extends Component {
   };
   commentList = () => {
     let comments = this.state.post.comments.comments;
-    console.log(comments);
+    //console.log(comments);// issue ?
     return comments.map((item) => {
       return (
         <View
@@ -130,36 +130,67 @@ class FeedSingle extends Component {
           style={{
             //flex: 1,
             // flexDirection: "row-reverse",
-            paddingVertical: 15,
+            paddingVertical: 8,
             width: "100%",
           }}
         >
-          <Text style={[style.text, { color: "#666", fontWeight: "bold" }]}>
-            {item.user.userName}
-          </Text>
-
-          <Text
-            style={[
-              style.text,
-              { color: "#666", fontWeight: "300", lineHeight: 26 },
-            ]}
+          <View
+            style={{
+              backgroundColor: "#fff",
+              marginVertical: 0,
+              paddingHorizontal: 7,
+              paddingTop: 7,
+              borderRadius: 7,
+              borderWidth: 1,
+              borderColor: "#fff",
+              overflow: "hidden",
+            }}
           >
-            {item.text}
-          </Text>
-          <Text
+            <Text style={[style.text, { color: "#666", fontWeight: "bold" }]}>
+              {item.user.userName}
+            </Text>
+            <Text
+              style={[
+                style.text,
+                {
+                  color: "#666",
+                  fontWeight: "300",
+                  lineHeight: 26,
+                },
+              ]}
+            >
+              {item.text}
+            </Text>
+            <Text
+              style={[
+                style.text,
+                {
+                  color: "#666",
+                  fontWeight: "200",
+                  fontSize: 11,
+                  paddingLeft: 7,
+                  alignItems: "center",
+                },
+              ]}
+            >
+              {farsiDate(item.date)}
+            </Text>
+          </View>
+
+          {/* <Text
             style={[
               style.text,
               {
                 color: "#666",
                 fontWeight: "200",
-                fontSize: 12,
+                fontSize: 11,
                 paddingLeft: 7,
                 alignItems: "center",
               },
             ]}
           >
             {farsiDate(item.date)}
-          </Text>
+          </Text> */}
         </View>
       );
     });
@@ -309,7 +340,10 @@ class FeedSingle extends Component {
                     />
                   </View>
                 </CardItem>
-                <CardItem>
+                <CardItem
+                  style={{ backgroundColor: "#f1f1f1", padding: 5 }}
+                  cardBody
+                >
                   <Body>
                     {/* <View style={{ flex: 1 }}> */}
                     {item.comments && item.comments.count > 0
@@ -325,20 +359,19 @@ class FeedSingle extends Component {
                 flexDirection: "row-reverse",
                 backgroundColor: "transparent",
                 borderTopWidth: 0,
-                paddingHorizontal: 7,
+                //paddingHorizontal: 7,
                 paddingBottom: 0,
                 elevation: 0,
-                height: 90,
+                // height: 60,
                 width: "100%",
               }}
             >
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 1, padding: 5 }}>
                 <Item regular>
                   <TouchableOpacity
                     style={{
                       alignItems: "center",
                       justifyContent: "center",
-                      //height: 90,
                     }}
                     onPress={() => {
                       addComment(
@@ -375,7 +408,8 @@ class FeedSingle extends Component {
                       fontFamily: "Shabnam-Light",
                       textAlign: "right",
                       padding: 5,
-                      height: 80,
+                      marginBottom: 10,
+                      // height: 50,
                     }}
                     multiline={true}
                     placeholder="ارسال نظر"

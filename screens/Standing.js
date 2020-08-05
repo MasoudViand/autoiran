@@ -34,7 +34,12 @@ export default class Standing extends Component {
             fetch(url)
               .then((response) => response.json())
               .then((json) => {
-                var imgdata = json.query.pages[0].thumbnail.source;
+                if (json.query.pages[0].thumbnail) {
+                  var imgdata = json.query.pages[0].thumbnail.source;
+                } else {
+                  var imgdata = "";
+                }
+
                 this.setState((prevState) => ({
                   imgArr: [
                     ...prevState.imgArr,
