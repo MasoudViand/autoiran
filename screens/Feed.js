@@ -50,6 +50,7 @@ import {
 import moment from "jalali-moment";
 import "moment/min/locales";
 class Feed extends Component {
+  _isMounted = false;
   constructor(props) {
     super(props);
     this.state = {
@@ -64,12 +65,18 @@ class Feed extends Component {
     this.navigate = this.props.navigation.navigate;
   }
   async componentDidMount() {
+    this._isMounted = true;
     if (firebase.auth().currentUser) {
       await this.getUserData();
     }
-    this.setState({ isLoading: true });
-    await this.fetchPosts();
-    this.setState({ isLoading: false });
+    if (this._isMounted) {
+      this.setState({ isLoading: true });
+      await this.fetchPosts();
+      this.setState({ isLoading: false });
+    }
+  }
+  componentWillUnmount() {
+    this._isMounted = false;
   }
   getUserData = async () => {
     let userId = firebase.auth().currentUser.uid;
@@ -190,9 +197,9 @@ class Feed extends Component {
     this.fetchPosts();
   };
   likefunc = async (userId, postId, index) => {
+    let data = this.state.DATA[index];
     try {
-      like(userId, postId);
-      let data = this.state.DATA[index];
+      like(userId, postId, data.likes.liked);
       this.state.DATA[index].likes = data.likes.liked
         ? { count: data.likes.count - 1, liked: false }
         : { count: data.likes.count + 1, liked: true };
@@ -255,6 +262,12 @@ class Feed extends Component {
                     {this.farsiDate(item.createdAt)}
                   </Text>
                 </Body>
+                <Left>
+                  <Icon
+                    style={{ color: "#777", fontSize: 20 }}
+                    name="ellipsis-vertical-outline"
+                  />
+                </Left>
               </Left>
             </CardItem>
             {item.postPhoto ? (
@@ -319,8 +332,9 @@ class Feed extends Component {
                       color: "#fc764c",
                       textAlign: "center",
                     }}
-                    type="FontAwesome"
-                    name={item.likes && item.likes.liked ? "heart" : "heart-o"}
+                    name={
+                      item.likes && item.likes.liked ? "heart" : "heart-outline"
+                    }
                     //name="heart"
                   />
                   <Text style={{ color: "#999", textAlign: "center" }} note>
@@ -328,18 +342,24 @@ class Feed extends Component {
                   </Text>
                 </View>
               </TouchableOpacity>
-
-              <View>
-                <Icon
-                  style={{ color: "#777", textAlign: "center" }}
-                  type="FontAwesome"
-                  name="comments-o"
-                  //name="comments"
-                />
-                <Text style={{ color: "#999", textAlign: "center" }} note>
-                  {item.comments ? item.comments.count : ""}
-                </Text>
-              </View>
+              <TouchableOpacity
+                onPress={() =>
+                  this.navigate("FeedSingle", {
+                    postId: item.id,
+                  })
+                }
+              >
+                <View>
+                  <Icon
+                    style={{ color: "#777", textAlign: "center" }}
+                    name="chatbubble-outline"
+                    //name="comments"
+                  />
+                  <Text style={{ color: "#999", textAlign: "center" }} note>
+                    {item.comments ? item.comments.count : ""}
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </CardItem>
           </Card>
         </Col>
@@ -367,45 +387,27 @@ class Feed extends Component {
           </Grid>
           {/* </ScrollView> */}
           <Footer>
-            <FooterTab style={{ backgroundColor: "#fc764c" }}>
+            <FooterTab>
               <Button
-                style={{
-                  //backgroundColor: "blue",
-                  borderWidth: 0,
-                }}
                 onPress={() =>
                   this.navigate("Home", {
                     name: this.state.inputName || this.state.name,
                   })
                 }
               >
-                <Icon
-                  style={{ color: "#e1e1e1" }}
-                  type="FontAwesome"
-                  name="home"
-                />
-                <Text style={{ color: "#e1e1e1" }}>Home</Text>
+                <Icon name="apps-outline" />
               </Button>
-            </FooterTab>
-            <FooterTab style={{ backgroundColor: "#fc764c" }}>
+              <Button active style={{ borderRadius: 0 }}>
+                <Icon active name="filter" />
+              </Button>
               <Button
-                style={{
-                  //backgroundColor: "blue",
-                  borderWidth: 0,
-                }}
-
-                // onPress={() =>
-                //   this.navigate("Home", {
-                //     name: this.state.inputName || this.state.name,
-                //   })
-                // }
+                onPress={() =>
+                  this.navigate("User", {
+                    name: this.state.inputName || this.state.name,
+                  })
+                }
               >
-                <Icon
-                  style={{ color: "#fff" }}
-                  type="FontAwesome"
-                  name="users"
-                />
-                <Text style={{ color: "#fff" }}>Feed</Text>
+                <Icon name="person-outline" />
               </Button>
             </FooterTab>
           </Footer>

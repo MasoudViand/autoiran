@@ -5,10 +5,18 @@ import moment from "jalali-moment";
 import "moment/min/locales";
 import { Keyboard } from "react-native";
 import style from "./css/styles";
-export const like = async (userId, postId) => {
-  let updateObj = {
-    users: firebase.firestore.FieldValue.arrayUnion(userId),
-  };
+export const like = async (userId, postId, isLiked) => {
+  let updateObj = {};
+  if (isLiked) {
+    updateObj = {
+      users: firebase.firestore.FieldValue.arrayRemove(userId),
+    };
+  } else {
+    updateObj = {
+      users: firebase.firestore.FieldValue.arrayUnion(userId),
+    };
+  }
+
   try {
     await firebase
       .firestore()
@@ -104,23 +112,25 @@ export const addComment = async (user, postId, text) => {
 
 export const getComments = async (postId) => {
   try {
-    const user = await firebase
+    const comments = await firebase
       .firestore()
       .doc(`comments/${postId}`)
+      //.orderBy("date", "desc")
       .get()
-      .then(function(user) {
+      .then(function(comments) {
+        //console.log(comments);
         var commentObj;
         const fieldPath = new firebase.firestore.FieldPath("comments");
-        let comments = user.get(fieldPath);
-        if (comments) {
-          commentObj = { count: comments.length, comments: comments };
+        let commentsList = comments.get(fieldPath);
+        if (commentsList) {
+          commentObj = { count: commentsList.length, comments: commentsList };
         } else {
           commentObj = { count: 0, comments: [] };
         }
         // console.log("Likes", likeObj);
         return commentObj;
       });
-    return user;
+    return comments;
     // Create a new field path
   } catch (e) {
     console.error(e);

@@ -43,7 +43,7 @@ class Chat extends React.Component<Props> {
       renderUsernameOnMessage: true,
       isLogged: false,
       vUrl:
-        "https://sa17.telewebion.com/devices/_definst_/varzesh-1000k.stream/chunks.m3u8?nimblesessionid=60694310&wmsAuthSign=aXNfZnJlZT0xJnNlcnZlcl90aW1lPTcvMjgvMjAyMCAxOjUwOjI1IEFNJmhhc2hfdmFsdWU9S1BjeEk4QVJIbVJBWDJDeEJUSnlWZz09JnZhbGlkbWludXRlcz02MDAw",
+        "https://s15.aparat.cam/hls/aoqoyxwwxcr5fwfuh3erinq7l3oetkacxkktx3wau3qlcolomqmj4tj5xqvq/index-v1-a1.m3u8",
     };
   }
 

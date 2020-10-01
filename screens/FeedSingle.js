@@ -37,6 +37,8 @@ import {
   Col,
   Textarea,
   FlatList,
+  List,
+  ListItem,
 } from "native-base";
 import { ScrollView } from "react-native-gesture-handler";
 import moment from "moment";
@@ -85,6 +87,7 @@ class FeedSingle extends Component {
         .doc(`posts/${postId}`)
         .get()
         .then(function(querySnapshot) {
+          console.log(querySnapshot);
           let result = querySnapshot.data();
           return result;
         });
@@ -105,9 +108,9 @@ class FeedSingle extends Component {
     }
   };
   likefunc = async (userId, postId) => {
+    let data = this.state.post;
     try {
-      like(userId, postId);
-      let data = this.state.post;
+      like(userId, postId, data.likes.liked);
       this.state.post.likes = data.likes.liked
         ? { count: data.likes.count - 1, liked: false }
         : { count: data.likes.count + 1, liked: true };
@@ -136,68 +139,85 @@ class FeedSingle extends Component {
         >
           <View
             style={{
-              backgroundColor: "#fff",
               marginVertical: 0,
               paddingHorizontal: 7,
               paddingTop: 7,
-              borderRadius: 7,
-              borderWidth: 1,
-              borderColor: "#fff",
-              overflow: "hidden",
+              flexDirection: "row-reverse",
             }}
           >
-            <Text style={[style.text, { color: "#666", fontWeight: "bold" }]}>
-              {item.user.userName}
-            </Text>
-            <Text
-              style={[
-                style.text,
-                {
-                  color: "#666",
-                  fontWeight: "300",
-                  lineHeight: 26,
-                },
-              ]}
-            >
-              {item.text}
-            </Text>
-            <Text
-              style={[
-                style.text,
-                {
-                  color: "#666",
-                  fontWeight: "200",
-                  fontSize: 11,
-                  paddingLeft: 7,
-                  alignItems: "center",
-                },
-              ]}
-            >
-              {farsiDate(item.date)}
-            </Text>
+            <View style={{ paddingLeft: 8 }}>
+              <Thumbnail
+                small
+                source={{
+                  uri: item.user.userAvatar
+                    ? item.user.userAvatar
+                    : `https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${
+                        item.user.userName
+                      }`,
+                }}
+              />
+            </View>
+            <View>
+              <Text
+                style={[
+                  style.text,
+                  { color: "#666", fontWeight: "bold", fontSize: 15 },
+                ]}
+              >
+                {item.user.userName}
+              </Text>
+              <Text
+                style={[
+                  style.text,
+                  {
+                    color: "#666",
+                    fontWeight: "300",
+                    lineHeight: 26,
+                  },
+                ]}
+              >
+                {item.text}
+              </Text>
+              <Text
+                style={[
+                  style.text,
+                  {
+                    color: "#666",
+                    fontWeight: "200",
+                    fontSize: 11,
+                    paddingLeft: 7,
+                    alignItems: "center",
+                  },
+                ]}
+              >
+                {farsiDate(item.date)}
+              </Text>
+            </View>
           </View>
-
-          {/* <Text
-            style={[
-              style.text,
-              {
-                color: "#666",
-                fontWeight: "200",
-                fontSize: 11,
-                paddingLeft: 7,
-                alignItems: "center",
-              },
-            ]}
-          >
-            {farsiDate(item.date)}
-          </Text> */}
         </View>
+        // <ListItem avatar>
+        //   <Left>
+        //     <Thumbnail
+        //       source={{
+        //         uri: item.user.userAvatar
+        //           ? item.user.userAvatar
+        //           : `https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${
+        //               item.user.userName
+        //             }`,
+        //       }}
+        //     />
+        //   </Left>
+        //   <Body>
+        //     <Text>{item.user.userName}</Text>
+        //     <Text note>{item.text}</Text>
+        //   </Body>
+        //   <Right>
+        //     <Text note>{farsiDate(item.date)}</Text>
+        //   </Right>
+        // </ListItem>
       );
     });
   };
-  // addComment = (userId, postId, text) => {
-
-  // }
   render() {
     const { post, isLoading } = this.state;
     const item = post;
@@ -208,7 +228,11 @@ class FeedSingle extends Component {
         <Container>
           {/* <Header /> */}
           <Content contentContainerStyle={{ flex: 1 }} scrollEnabled={false}>
-            <ScrollView>
+            <ScrollView
+              ref={(ref) => {
+                this.scrollView = ref;
+              }}
+            >
               <Card style={{ flex: 1 }}>
                 <CardItem header>
                   <Left style={{ flexDirection: "row-reverse" }}>
@@ -234,6 +258,12 @@ class FeedSingle extends Component {
                         {item.createdAt ? farsiDate(item.createdAt) : ""}
                       </Text>
                     </Body>
+                    <Left>
+                      <Icon
+                        style={{ color: "#777", fontSize: 20 }}
+                        name="ellipsis-vertical-outline"
+                      />
+                    </Left>
                   </Left>
                 </CardItem>
 
@@ -282,9 +312,10 @@ class FeedSingle extends Component {
                           paddingLeft: 7,
                           fontSize: 20,
                         }}
-                        type="FontAwesome"
                         name={
-                          item.likes && item.likes.liked ? "heart" : "heart-o"
+                          item.likes && item.likes.liked
+                            ? "heart"
+                            : "heart-outline"
                         }
                       />
                     </View>
@@ -334,14 +365,13 @@ class FeedSingle extends Component {
                         paddingLeft: 7,
                         fontSize: 20,
                       }}
-                      type="FontAwesome"
-                      name="comments-o"
+                      name="chatbubbles-outline"
                       //name="comments"
                     />
                   </View>
                 </CardItem>
                 <CardItem
-                  style={{ backgroundColor: "#f1f1f1", padding: 5 }}
+                  style={{ backgroundColor: "#fff", padding: 5 }}
                   cardBody
                 >
                   <Body>
@@ -391,12 +421,13 @@ class FeedSingle extends Component {
                         commentText: "",
                       });
                       Keyboard.dismiss();
+                      this.scrollView.scrollToEnd({ animated: true });
                     }}
                   >
                     <Icon
                       type="FontAwesome"
                       active
-                      name="send"
+                      name="paper-plane"
                       style={{ color: "#119ccf" }}
                     />
                   </TouchableOpacity>

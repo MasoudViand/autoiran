@@ -2,10 +2,34 @@
 import auth from "@react-native-firebase/auth";
 import _ from "lodash";
 import React, { Component } from "react";
-import { View, Keyboard, Alert, TouchableOpacity, Text } from "react-native";
-import { Card, SimpleCard } from "@paraboly/react-native-card";
+import { View, Keyboard, Alert, TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-
+import {
+  Container,
+  Header,
+  Content,
+  Card,
+  CardItem,
+  Thumbnail,
+  Text,
+  Button,
+  Icon,
+  Left,
+  Body,
+  Right,
+  Footer,
+  FooterTab,
+  Badge,
+  Grid,
+  Row,
+  Col,
+  Input,
+  Textarea,
+  Item,
+  Toast,
+  ListItem,
+  Switch,
+} from "native-base";
 class User extends Component {
   constructor(props) {
     super(props);
@@ -42,38 +66,77 @@ class User extends Component {
   };
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <ScrollView>
-          <View style={{ flex: 3 }}>
-            <Card
-              iconDisable
-              title="Title"
-              iconName="home"
-              iconType="Entypo"
-              onPress={() => {}}
-              borderRadius={20}
-              topRightText="50/306"
-              bottomRightText="30 km"
-              iconBackgroundColor="#fcd"
-              textContainerNumberOfLines={null}
-              content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Fusce a risus id libero sodales tempor sit amet non felis. Pellentesque id scelerisque risus. Aenean imperdiet vulputate auctor. Morbi fringilla nisi quis diam cursus tincidunt. Quisque consectetur porttitor efficitur. Nam in cursus neque. Vestibulum ornare scelerisque velit, in pretium mauris commodo ut. Nulla neque nulla, tristique sit amet nibh non, gravida laoreet nulla. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
-              topRightStyle={{
-                fontSize: 12,
-                fontWeight: "700",
-                color: "#505e80",
-              }}
-              bottomRightStyle={{
-                fontSize: 16,
-                fontWeight: "bold",
-                color: "#505e80",
-              }}
-            />
-          </View>
-          <View style={{ flex: 4 }}>
-            <Text>Bye!</Text>
-          </View>
-        </ScrollView>
-      </View>
+      <Container>
+        <Header />
+        <Content>
+          <ListItem icon>
+            <Left>
+              <Button style={{ backgroundColor: "#FF9501" }}>
+                <Icon active name="airplane" />
+              </Button>
+            </Left>
+            <Body>
+              <Text>Airplane Mode</Text>
+            </Body>
+            <Right>
+              <Switch value={false} />
+            </Right>
+          </ListItem>
+          <ListItem icon>
+            <Left>
+              <Button style={{ backgroundColor: "#007AFF" }}>
+                <Icon active name="wifi" />
+              </Button>
+            </Left>
+            <Body>
+              <Text>Wi-Fi</Text>
+            </Body>
+            <Right>
+              <Text>GeekyAnts</Text>
+              <Icon active name="arrow-forward" />
+            </Right>
+          </ListItem>
+          <ListItem icon>
+            <Left>
+              <Button style={{ backgroundColor: "#007AFF" }}>
+                <Icon active name="bluetooth" />
+              </Button>
+            </Left>
+            <Body>
+              <Text>Bluetooth</Text>
+            </Body>
+            <Right>
+              <Text>On</Text>
+              <Icon active name="arrow-forward" />
+            </Right>
+          </ListItem>
+        </Content>
+        <Footer>
+          <FooterTab>
+            <Button
+              onPress={() =>
+                this.navigate("Home", {
+                  name: this.state.inputName || this.state.name,
+                })
+              }
+            >
+              <Icon name="apps-outline" />
+            </Button>
+            <Button
+              onPress={() =>
+                this.navigate("Feed", {
+                  name: this.state.inputName || this.state.name,
+                })
+              }
+            >
+              <Icon active name="filter" />
+            </Button>
+            <Button active style={{ borderRadius: 0 }}>
+              <Icon name="person" />
+            </Button>
+          </FooterTab>
+        </Footer>
+      </Container>
     );
   }
 }

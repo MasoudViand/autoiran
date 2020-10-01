@@ -319,38 +319,27 @@ class Home extends Component {
             </Grid>
           </ScrollView>
           <Footer>
-            <FooterTab style={{ backgroundColor: "#fc764c" }}>
-              <Button
-                style={{ backgroundColor: "#ff6738", borderRadius: 0 }}
-                active
-                // onPress={() =>
-                //   this.navigate("Home", {
-                //     name: this.state.inputName || this.state.name,
-                //   })
-                // }
-              >
-                <Icon
-                  style={{ color: "#fff" }}
-                  type="FontAwesome"
-                  name="home"
-                />
-                <Text style={{ color: "#fff" }}>Home</Text>
+            <FooterTab>
+              <Button active style={{ borderRadius: 0 }}>
+                <Icon name="apps" />
               </Button>
               <Button
-                style={{ backgroundColor: "#ff6738", borderRadius: 0 }}
-                active
                 onPress={() =>
                   this.navigate("Feed", {
                     name: this.state.inputName || this.state.name,
                   })
                 }
               >
-                <Icon
-                  style={{ color: "#e1e1e1" }}
-                  type="FontAwesome"
-                  name="users"
-                />
-                <Text style={{ color: "#e1e1e1" }}>Feed</Text>
+                <Icon active name="filter-outline" />
+              </Button>
+              <Button
+                onPress={() =>
+                  this.navigate("User", {
+                    name: this.state.inputName || this.state.name,
+                  })
+                }
+              >
+                <Icon name="person-outline" />
               </Button>
             </FooterTab>
           </Footer>

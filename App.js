@@ -25,12 +25,14 @@ function App() {
         <Stack.Navigator
           initialRouteName="Home"
           screenOptions={{
+            //animationEnabled: false,
             headerStyle: {
               backgroundColor: "#f4511e",
             },
             headerTintColor: "#fff",
             headerTitleStyle: {
-              fontWeight: "bold",
+              fontWeight: "300",
+              fontFamily: "Shabnam-Light",
             },
           }}
         >
@@ -38,28 +40,29 @@ function App() {
             name="Home"
             component={Home}
             options={{
-              title: "Home",
+              title: "F1 IRAN",
+              animationEnabled: false,
             }}
           />
           <Stack.Screen
             name="Login"
             component={Login}
-            options={{ title: "Login" }}
+            options={{ title: "ورود" }}
           />
           <Stack.Screen
             name="News"
             component={News}
-            options={{ title: "News" }}
+            options={{ title: "اخبار" }}
           />
           <Stack.Screen
             name="Chat"
             component={Chat}
-            options={{ title: "Live" }}
+            options={{ title: "پخش زنده" }}
           />
           <Stack.Screen
             name="User"
             component={User}
-            options={{ title: "Account" }}
+            options={{ title: "حساب کاربری", animationEnabled: false }}
           />
           <Stack.Screen
             name="SingleNews"
@@ -69,12 +72,12 @@ function App() {
           <Stack.Screen
             name="Standing"
             component={Standing}
-            options={{ title: "Standing" }}
+            options={{ title: "رده بندی" }}
           />
           <Stack.Screen
             name="Schedule"
             component={Schedule}
-            options={{ title: "Schedule" }}
+            options={{ title: "برنامه مسابقات" }}
           />
           <Stack.Screen
             name="Feed"
@@ -104,8 +107,8 @@ function App() {
                       padding: 0,
                       margin: 0,
                     }}
-                    type="FontAwesome"
-                    name="plus"
+                    type="Ionicons"
+                    name="add-circle-outline"
                   />
                   <Text
                     style={{
@@ -125,7 +128,7 @@ function App() {
           <Stack.Screen
             name="AddFeed"
             component={AddFeed}
-            options={{ title: "Add Post" }}
+            options={{ title: "ارسال پست" }}
           />
           <Stack.Screen
             name="FeedSingle"
