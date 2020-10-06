@@ -197,15 +197,19 @@ class Feed extends Component {
     this.fetchPosts();
   };
   likefunc = async (userId, postId, index) => {
-    let data = this.state.DATA[index];
-    try {
-      like(userId, postId, data.likes.liked);
-      this.state.DATA[index].likes = data.likes.liked
-        ? { count: data.likes.count - 1, liked: false }
-        : { count: data.likes.count + 1, liked: true };
-      this.setState({ isLoading: false });
-    } catch (error) {
-      alert("خطا!");
+    if (firebase.auth().currentUser) {
+      let data = this.state.DATA[index];
+      try {
+        like(userId, postId, data.likes.liked);
+        this.state.DATA[index].likes = data.likes.liked
+          ? { count: data.likes.count - 1, liked: false }
+          : { count: data.likes.count + 1, liked: true };
+        this.setState({ isLoading: false });
+      } catch (error) {
+        alert("خطا!");
+      }
+    } else {
+      alert("لطفا وارد شوید");
     }
   };
   farsiDate = (date) => {

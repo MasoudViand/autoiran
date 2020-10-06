@@ -23,7 +23,7 @@ import style from "./css/styles";
 //import { firebase, auth, database } from "react-native-firebase";
 // import Video from "react-native-video";
 import VideoPlayer from "react-native-video-controls";
-import { Container, Row, Grid, Col } from "native-base";
+import { Container, Row, Grid, Col, Item, Toast } from "native-base";
 import { ScrollView } from "react-native-gesture-handler";
 type Props = {
   name?: string,
@@ -42,8 +42,9 @@ class Chat extends React.Component<Props> {
       modalVisible: false,
       renderUsernameOnMessage: true,
       isLogged: false,
+      streamList: [],
       vUrl:
-        "https://s15.aparat.cam/hls/aoqoyxwwxcr5fwfuh3erinq7l3oetkacxkktx3wau3qlcolomqmj4tj5xqvq/index-v1-a1.m3u8",
+        "https://sl32.telewebion.com/devices/_definst_/tv3-500k.stream/chunks.m3u8?nimblesessionid=21412746&wmsAuthSign=aXNfZnJlZT0xJnNlcnZlcl90aW1lPTEwLzEvMjAyMCA1Ojc6MTMgQU0maGFzaF92YWx1ZT1LalNVTVVDUDNuREc5MUU1YWZkNmdnPT0mdmFsaWRtaW51dGVzPTYwMDA=",
     };
   }
 
@@ -59,6 +60,17 @@ class Chat extends React.Component<Props> {
   //     '<video playsinline controls autoplay width="100%" src="https://ul.cdn946.net:8443/hls/iexb8.m3u8?s=2RQz63ET3J1kn36_ChaOkw&e=1595580363" ></video>',
   //   //name: (name = name || null),
   // };
+  getLiveUrl = async () => {
+    try {
+      await fetch("https://cigarettedirectory.com/api/live")
+        .then((response) => response.json())
+        .then((json) => {
+          this.setState({ streamList: json, vUrl: json[0].url });
+        });
+    } catch (error) {
+      console.error("error", error);
+    }
+  };
   setModalVisible = (visible) => {
     this.setState({ modalVisible: visible });
   };
@@ -89,6 +101,14 @@ class Chat extends React.Component<Props> {
       />
     );
   }
+  videoError = () => {
+    Toast.show({
+      text: " مشکل در پخش, از لینک دیگری استفاده کنید",
+      type: "warning",
+      textStyle: style.toasttext,
+      duration: 2500,
+    });
+  };
   renderSightoutView = () => {
     if (!auth().currentUser) {
       return (
@@ -118,6 +138,27 @@ class Chat extends React.Component<Props> {
       );
     }
   };
+  // renderVideo = () => {
+  //   if (this.state.vUrl.length > 0) {
+  //     <VideoPlayer
+  //       source={this.state.vUrl} // Can be a URL or a local file.
+  //       ref={(ref) => {
+  //         this.player = ref;
+  //       }} // Store reference
+  //       //onBuffer={this.onBuffer} // Callback when remote video is buffering
+  //       //onError={this.videoError} // Callback when video cannot be loaded
+  //       //controls={true}
+  //       playWhenInactive={true}
+  //       poster="https://picsum.photos/300/200"
+  //       posterResizeMode="cover"
+  //       showOnStart={false}
+  //       //fullscreen={true}
+  //       paused={false}
+  //       //resizeMode="cover"
+  //       style={style.backgroundVideo}
+  //     />;
+  //   }
+  // };
   render() {
     const { modalVisible } = this.state;
     let disablesend = false;
@@ -132,24 +173,49 @@ class Chat extends React.Component<Props> {
             <Col>
               {this.renderSightoutView()}
               <Row size={5}>
+                {/*this.renderVideo()*/}
                 <VideoPlayer
-                  source={{
-                    uri: this.state.vUrl,
-                  }} // Can be a URL or a local file.
+                  source={{ uri: this.state.vUrl }} // Can be a URL or a local file.
                   ref={(ref) => {
                     this.player = ref;
                   }} // Store reference
                   //onBuffer={this.onBuffer} // Callback when remote video is buffering
-                  //onError={this.videoError} // Callback when video cannot be loaded
+                  onError={this.videoError} // Callback when video cannot be loaded
                   //controls={true}
                   playWhenInactive={true}
                   poster="https://picsum.photos/300/200"
                   posterResizeMode="cover"
+                  //showOnStart={false}
                   //fullscreen={true}
                   paused={false}
                   //resizeMode="cover"
                   style={style.backgroundVideo}
                 />
+              </Row>
+              <Row
+                size={1}
+                style={{
+                  flex: 1,
+                  flexDirection: "row-reverse",
+                  justifyContent: "space-evenly",
+                  backgroundColor: "#999",
+                  alignItems: "center",
+                }}
+              >
+                {this.state.streamList.map((item) => {
+                  return (
+                    <TouchableOpacity
+                      onPress={(e) => {
+                        this.setState({ vUrl: item.url });
+                      }}
+                      key={item.name}
+                    >
+                      <Text style={[style.text, { color: "#fff" }]}>
+                        {item.name}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
               </Row>
               <Row size={10}>
                 <GiftedChat
@@ -207,6 +273,8 @@ class Chat extends React.Component<Props> {
     );
   }
   componentDidMount() {
+    this.getLiveUrl();
+
     if (!auth().currentUser) {
       this.setState({ modalVisible: true });
     }

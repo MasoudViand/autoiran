@@ -108,16 +108,20 @@ class FeedSingle extends Component {
     }
   };
   likefunc = async (userId, postId) => {
-    let data = this.state.post;
-    try {
-      like(userId, postId, data.likes.liked);
-      this.state.post.likes = data.likes.liked
-        ? { count: data.likes.count - 1, liked: false }
-        : { count: data.likes.count + 1, liked: true };
-      this.setState({ isLoading: false });
-    } catch (error) {
-      console.log(error);
-      alert("خطا!");
+    if (firebase.auth().currentUser) {
+      let data = this.state.post;
+      try {
+        like(userId, postId, data.likes.liked);
+        this.state.post.likes = data.likes.liked
+          ? { count: data.likes.count - 1, liked: false }
+          : { count: data.likes.count + 1, liked: true };
+        this.setState({ isLoading: false });
+      } catch (error) {
+        console.log(error);
+        alert("خطا!");
+      }
+    } else {
+      alert("لطفا وارد شوید");
     }
   };
   onChangeCommentText = (commentText) => {
@@ -384,74 +388,76 @@ class FeedSingle extends Component {
                 </CardItem>
               </Card>
             </ScrollView>
-            <Footer
-              style={{
-                flexDirection: "row-reverse",
-                backgroundColor: "transparent",
-                borderTopWidth: 0,
-                //paddingHorizontal: 7,
-                paddingBottom: 0,
-                elevation: 0,
-                // height: 60,
-                width: "100%",
-              }}
-            >
-              <View style={{ flex: 1, padding: 5 }}>
-                <Item regular>
-                  <TouchableOpacity
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                    onPress={() => {
-                      addComment(
-                        this.state.user,
-                        item.id,
-                        this.state.commentText
-                      );
-                      item.comments.count = item.comments.count + 1;
-                      item.comments.comments.push({
-                        commentId: uuid.v4(),
-                        date: moment().unix(),
-                        text: this.state.commentText,
-                        user: this.state.user,
-                      });
+            {firebase.auth().currentUser && (
+              <Footer
+                style={{
+                  flexDirection: "row-reverse",
+                  backgroundColor: "transparent",
+                  borderTopWidth: 0,
+                  //paddingHorizontal: 7,
+                  paddingBottom: 0,
+                  elevation: 0,
+                  // height: 60,
+                  width: "100%",
+                }}
+              >
+                <View style={{ flex: 1, padding: 5 }}>
+                  <Item regular>
+                    <TouchableOpacity
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                      onPress={() => {
+                        addComment(
+                          this.state.user,
+                          item.id,
+                          this.state.commentText
+                        );
+                        item.comments.count = item.comments.count + 1;
+                        item.comments.comments.push({
+                          commentId: uuid.v4(),
+                          date: moment().unix(),
+                          text: this.state.commentText,
+                          user: this.state.user,
+                        });
 
-                      this.setState({
-                        commentText: "",
-                      });
-                      Keyboard.dismiss();
-                      this.scrollView.scrollToEnd({ animated: true });
-                    }}
-                  >
-                    <Icon
-                      type="FontAwesome"
-                      active
-                      name="paper-plane"
-                      style={{ color: "#119ccf" }}
+                        this.setState({
+                          commentText: "",
+                        });
+                        Keyboard.dismiss();
+                        this.scrollView.scrollToEnd({ animated: true });
+                      }}
+                    >
+                      <Icon
+                        type="FontAwesome"
+                        active
+                        name="paper-plane"
+                        style={{ color: "#119ccf" }}
+                      />
+                    </TouchableOpacity>
+                    <Textarea
+                      style={{
+                        flex: 1,
+                        lineHeight: 26,
+                        fontSize: 15,
+                        fontFamily: "Shabnam-Light",
+                        textAlign: "right",
+                        padding: 5,
+                        marginBottom: 10,
+                        // height: 50,
+                      }}
+                      multiline={true}
+                      placeholder="ارسال نظر"
+                      value={this.state.commentText}
+                      onChangeText={(commentText) =>
+                        this.onChangeCommentText(commentText)
+                      }
                     />
-                  </TouchableOpacity>
-                  <Textarea
-                    style={{
-                      flex: 1,
-                      lineHeight: 26,
-                      fontSize: 15,
-                      fontFamily: "Shabnam-Light",
-                      textAlign: "right",
-                      padding: 5,
-                      marginBottom: 10,
-                      // height: 50,
-                    }}
-                    multiline={true}
-                    placeholder="ارسال نظر"
-                    value={this.state.commentText}
-                    onChangeText={(commentText) =>
-                      this.onChangeCommentText(commentText)
-                    }
-                  />
-                </Item>
-              </View>
-            </Footer>
+                  </Item>
+                </View>
+              </Footer>
+            )}
           </Content>
           {isLoading ? (
             <ActivityIndicator

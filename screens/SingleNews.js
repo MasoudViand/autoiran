@@ -2,7 +2,15 @@
 import auth from "@react-native-firebase/auth";
 import _ from "lodash";
 import React, { Component } from "react";
-import { View, Keyboard, Alert, TouchableOpacity, Image } from "react-native";
+import moment from "jalali-moment";
+import {
+  View,
+  Keyboard,
+  Alert,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+} from "react-native";
 //import { Card, SimpleCard } from "@paraboly/react-native-card";
 import {
   Container,
@@ -23,75 +31,106 @@ class SingleNews extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: [],
       user: [],
-      isTyping: true,
-      renderUsernameOnMessage: true,
-      isLogged: false,
+      data: [],
+      isLoading: false,
     };
     this.navigate = this.props.navigation.navigate;
   }
+  async componentDidMount() {
+    let newsID = this.props.route.params.newsID;
+    // moment.locale("fa");
+    this.setState({ isLoading: true });
+    await fetch(
+      "https://cigarettedirectory.com/api/singleNews.php?id=" + newsID
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({ data: json });
+      })
+      .catch((error) => console.error(error))
+      .finally(() => {
+        this.setState({ isLoading: false });
+      });
+  }
+  farsiDate = (date) => {
+    return moment
+      .from(date, "en", "YYYY/MM/DD hh:mm a")
+      .format("D MMM YYYY hh:mm a");
+  };
   render() {
+    const { data, isLoading } = this.state;
+    console.log(data[0]);
+    let item = data[0];
     return (
       <Container>
         {/* <Header /> */}
         <Content>
-          <Card style={{ flex: 1 }}>
-            <CardItem>
-              <Body>
-                <Text
-                  style={{
-                    writingDirection: "rtl",
-                    lineHeight: 25,
-                    fontFamily: "Shabnam-Bold",
-                    textAlign: "justify",
-                  }}
-                >
-                  لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-                  استفاده از طراحان گرافیک است.
-                </Text>
-              </Body>
-            </CardItem>
+          {isLoading ? (
+            <ActivityIndicator />
+          ) : (
+            <Card style={{ flex: 1 }}>
+              <CardItem>
+                <Body>
+                  <Text
+                    style={{
+                      writingDirection: "rtl",
+                      lineHeight: 25,
+                      fontFamily: "Shabnam-Bold",
+                      textAlign: "justify",
+                      alignSelf: "flex-end",
+                      flex: 1,
+                    }}
+                  >
+                    {item && item.title}
+                  </Text>
+                </Body>
+              </CardItem>
 
-            <CardItem>
-              <Body>
-                <Image
-                  source={{ uri: "https://picsum.photos/200" }}
-                  style={{ height: 200, width: "100%", flex: 1 }}
-                />
-                <Text
-                  style={{
-                    writingDirection: "rtl",
-                    textAlign: "justify",
-                    paddingTop: 15,
-                    lineHeight: 26,
-                    fontFamily: "Shabnam-Light",
-                  }}
-                >
-                  لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-                  استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و
-                  مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی
-                  تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای
-                  کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و
-                  آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم
-                  افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص
-                  طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این
-                  صورت می توان امید داشت که تمام و دشواری موجود در ارائه
-                  راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل
-                  حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای
-                  موجود طراحی اساسا مورد استفاده قرار گیرد.
-                </Text>
-              </Body>
-            </CardItem>
-            <CardItem>
-              <Left>
-                <Button transparent textStyle={{ color: "#87838B" }}>
+              <CardItem>
+                <Body>
+                  {item && item.img ? (
+                    <Image
+                      source={{ uri: item.img }}
+                      style={{ height: 200, width: "100%", flex: 1 }}
+                    />
+                  ) : (
+                    <Text />
+                  )}
+                  <Text
+                    style={{
+                      writingDirection: "rtl",
+                      textAlign: "justify",
+                      paddingTop: 15,
+                      lineHeight: 26,
+                      fontFamily: "Shabnam-Light",
+                      alignSelf: "flex-end",
+                      flex: 1,
+                    }}
+                  >
+                    {item && item.text}
+                  </Text>
+                </Body>
+              </CardItem>
+              <CardItem>
+                <Left>
+                  <Text
+                    style={{
+                      fontFamily: "Shabnam-light",
+                      alignSelf: "flex-end",
+                      flex: 1,
+                      marginRight: 0,
+                    }}
+                    note
+                  >
+                    {item && this.farsiDate(item.date)}
+                  </Text>
                   {/* <Icon name="logo-github" /> */}
-                  <Text>1,926 stars</Text>
-                </Button>
-              </Left>
-            </CardItem>
-          </Card>
+                  {/* <Text>1,926 stars</Text> */}
+                </Left>
+              </CardItem>
+            </Card>
+          )}
         </Content>
       </Container>
     );

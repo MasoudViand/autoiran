@@ -27,7 +27,8 @@ class PhoneAuthScreen extends Component {
     if (this.validatePhoneNumber()) {
       firebase
         .auth()
-        .signInWithPhoneNumber(this.state.phone)
+        //.signInWithPhoneNumber(this.state.phone)verifyPhoneNumber
+        .verifyPhoneNumber(this.state.phone)
         .then((confirmResult) => {
           this.setState({ confirmResult });
         })
@@ -82,7 +83,7 @@ class PhoneAuthScreen extends Component {
           style={[styles.themeButton, { marginTop: 20 }]}
           onPress={this.handleVerifyCode}
         >
-          <Text style={styles.themeButtonTitle}>Verify Code</Text>
+          <Text style={styles.themeButtonTitle}>Verify Code2</Text>
         </TouchableOpacity>
       </View>
     );
@@ -114,7 +115,7 @@ class PhoneAuthScreen extends Component {
             }
           >
             <Text style={styles.themeButtonTitle}>
-              {this.state.confirmResult ? "Change Phone Number" : "Send Code"}
+              {this.state.confirmResult ? "Change Phone Number" : "Send Code1"}
             </Text>
           </TouchableOpacity>
 

@@ -98,7 +98,9 @@ class Login extends Component {
     if (this.validatePhoneNumber()) {
       auth()
         .signInWithPhoneNumber(this.state.phone)
+        //.verifyPhoneNumber(this.state.phone)
         .then((confirmResult) => {
+          //console.log(confirmResult);
           this.setState({ confirmResult });
         })
         .then(this.checkUser(this.state.phone))
@@ -291,7 +293,7 @@ class Login extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#aaa",
+    backgroundColor: "#fff",
   },
   page: {
     flex: 1,
