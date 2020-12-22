@@ -7,10 +7,8 @@ import {
   StyleSheet,
   Image,
 } from "react-native";
-//import moment from "moment";
+import moment from "moment";
 import style from "./css/styles";
-import "moment/min/locales";
-import moment from "jalali-moment";
 //import { IMG_DIR } from "../Constants";
 import {
   Grid,
@@ -22,6 +20,11 @@ import {
   Header,
   Container,
   H1,
+  Picker,
+  Item,
+  Content,
+  Form,
+  Icon,
 } from "native-base";
 export default class Schedule extends Component {
   constructor(props) {
@@ -30,17 +33,61 @@ export default class Schedule extends Component {
     this.state = {
       data: [],
       isLoading: true,
+      selectedItem: undefined,
+      selected: "null",
+      seasons: [],
+      races: [],
     };
+  }
+  onValueChange(value) {
+    this.setState({
+      selected: value,
+    });
+    this.getRaces(value);
   }
   circuitImg = (id) => {
     //require('../assets/img/circuits/')
-    imageName = id + ".png";
+    let imageName = id + ".png";
     var url =
       "http://autoiran.com/formula1/assets/circuits/" + imageName.toLowerCase();
     return url;
   };
-  componentDidMount() {
-    moment.locale("fa");
+  async componentDidMount() {
+    await this.getSeasons();
+    await this.getRaces(this.state.selected);
+    this.setState({ isLoading: false });
+  }
+  async getSeasons() {
+    this.setState({ isLoading: true });
+    await fetch("https://api.sofascore.com/api/v1/unique-stage/40/seasons")
+      .then((response) => response.json())
+      .then((json) => {
+        let seasons = [];
+        json.seasons.map((item) => {
+          seasons.push({ label: item.description, value: item.id });
+        });
+        this.setState({ seasons: seasons, selected: seasons[0].value });
+      })
+      .catch((error) => console.error(error))
+      .finally(() => {
+        this.setState({ isLoading: false });
+      });
+  }
+  async getRaces(season) {
+    this.setState({ isLoading: true });
+    await fetch(
+      "https://api.sofascore.com/api/v1/stage/" + season + "/substages"
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({ races: json.stages });
+      })
+      .catch((error) => console.error(error))
+      .finally(() => {
+        this.setState({ isLoading: false });
+      });
+  }
+  getCurrent() {
     fetch("https://ergast.com/api/f1/current.json")
       .then((response) => response.json())
       .then((json) => {
@@ -51,59 +98,125 @@ export default class Schedule extends Component {
         this.setState({ isLoading: false });
       });
   }
+  defaultImage(id) {
+    let defaultImage = "https://via.placeholder.com/150?text=No%20image";
+    let webImage = "https://api.sofascore.com/api/v1/stage/" + id + "/image";
 
+    if (!webImage) {
+      defaultImage = defaultImage;
+    } else {
+      defaultImage = webImage;
+    }
+
+    return defaultImage;
+  }
   render() {
-    const { data, isLoading } = this.state;
+    const { data, isLoading, seasons, races } = this.state;
 
     return (
       <Container style={{ flex: 1, padding: 24 }}>
         <Text style={[style.text, { marginBottom: 15, fontSize: 26 }]}>
-          برنامه مسابقات فصل {data.season}
+          {"Season Schedule"}
         </Text>
-        {isLoading ? (
-          <ActivityIndicator />
-        ) : (
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            data={data.Races}
-            keyExtractor={(item, index) => "key" + index}
-            renderItem={({ item }) => (
-              <View style={{ paddingBottom: 15 }}>
-                <Grid>
-                  <Row style={style.card}>
-                    <Col size={35} style={{ backgroundColor: "#aaa" }}>
-                      <Image
-                        style={style.thumbnail}
-                        source={{
-                          uri: this.circuitImg(item.Circuit.circuitId),
-                        }}
-                      />
-                    </Col>
-                    <Col size={65} style={style.boxPadding}>
-                      <Text style={[style.text, { paddingBottom: 7 }]}>
-                        مسابقه: {item.raceName}
-                      </Text>
-                      <Text style={[style.text, { paddingBottom: 7 }]}>
-                        تاریخ مسابقه: {this.farsiDate(item.date)}
-                      </Text>
-                      <Text style={[style.text, { paddingBottom: 7 }]}>
-                        مکان: {item.Circuit.Location.locality}(
-                        {item.Circuit.Location.country})
-                      </Text>
-                      <Text style={style.text}>
-                        پیست: {item.Circuit.circuitName}
-                      </Text>
-                    </Col>
-                  </Row>
-                </Grid>
-              </View>
-            )}
-          />
-        )}
+        <Content>
+          {isLoading ? (
+            <ActivityIndicator />
+          ) : (
+            <View style={{ flex: 1 }}>
+              {seasons && (
+                <Form>
+                  <Picker
+                    iosIcon={<Icon name="angle-down" type="FontAwesome" />}
+                    iosHeader="Select one"
+                    mode="dropdown"
+                    style={{
+                      borderColor: "#e1e1e1",
+                      borderWidth: 1,
+                      marginBottom: 20,
+                    }}
+                    selectedValue={this.state.selected}
+                    placeholder="Select One"
+                    onValueChange={this.onValueChange.bind(this)}
+                  >
+                    {seasons.map((item, index) => {
+                      return (
+                        <Picker.Item
+                          label={item.label}
+                          value={item.value}
+                          key={index}
+                        />
+                      );
+                    })}
+                  </Picker>
+                </Form>
+              )}
+              <Grid>
+                <Row style={{ flexDirection: "column" }}>
+                  {races &&
+                    races.map((item, index) => {
+                      return (
+                        <Col size={50} key={index} style={style.card}>
+                          <View style={{ backgroundColor: "#e1e1e1" }}>
+                            <Image
+                              style={[style.thumbnail, { resizeMode: "cover" }]}
+                              source={{
+                                uri: this.defaultImage(item.id),
+                              }}
+                            />
+                          </View>
+                          <View style={style.boxPadding}>
+                            <Text style={{ paddingVertical: 3 }}>
+                              {"Race: "}
+                              <Text style={style.textSecondary}>
+                                {item.description +
+                                  "(" +
+                                  item.country.alpha2 +
+                                  ")"}
+                              </Text>
+                            </Text>
+
+                            <Text style={{ paddingVertical: 3 }}>
+                              {"Circuit: "}
+                              <Text style={style.textSecondary}>
+                                {item.info.circuit}
+                              </Text>
+                            </Text>
+
+                            <Text style={{ paddingVertical: 3 }}>
+                              {"Status: "}
+                              <Text style={style.textSecondary}>
+                                {item.status.description}
+                              </Text>
+                            </Text>
+                            {item.winner && (
+                              <Text style={{ paddingVertical: 3 }}>
+                                {"Winner: "}
+                                <Text style={style.textSecondary}>
+                                  {item.winner.name +
+                                    "(" +
+                                    item.winner.country.alpha2 +
+                                    ")"}
+                                </Text>
+                              </Text>
+                            )}
+                            <Text style={{ paddingVertical: 3 }}>
+                              {"Date: "}
+                              <Text style={style.textSecondary}>
+                                {moment
+                                  .unix(item.startDateTimestamp)
+                                  .format("DD MMMM YYYY")}
+                              </Text>
+                            </Text>
+                          </View>
+                        </Col>
+                      );
+                    })}
+                </Row>
+              </Grid>
+            </View>
+          )}
+        </Content>
       </Container>
     );
   }
-  farsiDate = (date) => {
-    return moment.from(date, "en", "YYYY/MM/DD").format("D MMM YYYY");
-  };
 }

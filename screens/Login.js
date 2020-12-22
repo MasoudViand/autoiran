@@ -100,7 +100,7 @@ class Login extends Component {
         .signInWithPhoneNumber(this.state.phone)
         //.verifyPhoneNumber(this.state.phone)
         .then((confirmResult) => {
-          //console.log(confirmResult);
+          console.log(confirmResult);
           this.setState({ confirmResult });
         })
         .then(this.checkUser(this.state.phone))
@@ -117,44 +117,53 @@ class Login extends Component {
   changePhoneNumber = () => {
     this.setState({ confirmResult: null, verificationCode: "" });
   };
-  updateProfile = () => {
+  updateProfile = async () => {
     if (auth().currentUser) {
       userId = auth().currentUser.uid;
       if (userId) {
-        database()
+        this.setState({ userId: userId });
+        await database()
           .ref("users/" + userId)
           .set({
             Name: this.state.name,
             Phone: this.state.phone,
           })
-          .then(this.setState({ inputName: this.state.name }));
+          .then(this.setState({ inputName: this.state.name }))
+          .then(() => {
+            //this.onPress();
+            //this.setState({ inputName: this.state.name });
+            alert(`Welcome! ${this.state.inputName || this.state.name}`);
+            this.navigate("Home");
+          });
       }
     }
   };
-  handleVerifyCode = () => {
+  handleVerifyCode = async () => {
     // Request for OTP verification
     const { confirmResult, verificationCode } = this.state;
-    if (verificationCode.length == 6) {
-      confirmResult
-        .confirm(verificationCode)
-        .then((user) => {
-          this.setState({ userId: user.uid });
-          if (this.state.inputName === null) {
-            this.updateProfile();
-          }
-        })
-        .then(() => {
-          //this.onPress();
-          //this.setState({ inputName: this.state.name });
-          alert(`Welcome! ${this.state.inputName}`);
-          this.navigate("Home");
-        })
-        .catch((error) => {
-          alert(error.message);
-          console.log(error);
-        });
-    } else {
-      alert("Please enter a 6 digit OTP code.");
+    try {
+      if (auth().currentUser) {
+        if (this.state.inputName === null) {
+          this.updateProfile();
+        }
+      } else {
+        if (verificationCode.length == 6) {
+          confirmResult.confirm(verificationCode).then((user) => {
+            this.setState({ userId: user.uid });
+            if (this.state.inputName === null) {
+              this.updateProfile();
+            } else {
+              alert(`Welcome! ${this.state.inputName}`);
+              this.navigate("Home");
+            }
+          });
+        } else {
+          alert("Please enter a 6 digit OTP code.");
+        }
+      }
+    } catch (error) {
+      alert(error.message);
+      console.log(error);
     }
   };
   renderSightoutView = () => {
