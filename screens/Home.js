@@ -321,7 +321,7 @@ class Home extends Component {
           <Footer>
             <FooterTab>
               <Button active style={{ borderRadius: 0 }}>
-                <Icon name="apps" />
+                <Icon active name="th-large" type="FontAwesome" />
               </Button>
               <Button
                 onPress={() =>
@@ -330,7 +330,7 @@ class Home extends Component {
                   })
                 }
               >
-                <Icon active name="filter-outline" />
+                <Icon name="feed" type="FontAwesome" />
               </Button>
               <Button
                 onPress={() =>
@@ -339,7 +339,7 @@ class Home extends Component {
                   })
                 }
               >
-                <Icon name="person-outline" />
+                <Icon name="user-o" type="FontAwesome" />
               </Button>
             </FooterTab>
           </Footer>

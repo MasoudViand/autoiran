@@ -265,7 +265,8 @@ class FeedSingle extends Component {
                     <Left>
                       <Icon
                         style={{ color: "#777", fontSize: 20 }}
-                        name="ellipsis-vertical-outline"
+                        name="ellipsis-v"
+                        type="FontAwesome"
                       />
                     </Left>
                   </Left>
@@ -316,10 +317,9 @@ class FeedSingle extends Component {
                           paddingLeft: 7,
                           fontSize: 20,
                         }}
+                        type="FontAwesome"
                         name={
-                          item.likes && item.likes.liked
-                            ? "heart"
-                            : "heart-outline"
+                          item.likes && item.likes.liked ? "heart" : "heart-o"
                         }
                       />
                     </View>
@@ -369,8 +369,8 @@ class FeedSingle extends Component {
                         paddingLeft: 7,
                         fontSize: 20,
                       }}
-                      name="chatbubbles-outline"
-                      //name="comments"
+                      name="comment-o"
+                      type="FontAwesome"
                     />
                   </View>
                 </CardItem>

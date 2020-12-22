@@ -72,7 +72,7 @@ class User extends Component {
           <ListItem icon>
             <Left>
               <Button style={{ backgroundColor: "#FF9501" }}>
-                <Icon active name="airplane" />
+                <Icon active name="airplane" type="FontAwesome" />
               </Button>
             </Left>
             <Body>
@@ -85,7 +85,7 @@ class User extends Component {
           <ListItem icon>
             <Left>
               <Button style={{ backgroundColor: "#007AFF" }}>
-                <Icon active name="wifi" />
+                <Icon active name="wifi" type="FontAwesome" />
               </Button>
             </Left>
             <Body>
@@ -93,13 +93,13 @@ class User extends Component {
             </Body>
             <Right>
               <Text>GeekyAnts</Text>
-              <Icon active name="arrow-forward" />
+              <Icon active name="arrow-forward" type="FontAwesome" />
             </Right>
           </ListItem>
           <ListItem icon>
             <Left>
               <Button style={{ backgroundColor: "#007AFF" }}>
-                <Icon active name="bluetooth" />
+                <Icon active name="bluetooth" type="FontAwesome" />
               </Button>
             </Left>
             <Body>
@@ -107,7 +107,7 @@ class User extends Component {
             </Body>
             <Right>
               <Text>On</Text>
-              <Icon active name="arrow-forward" />
+              <Icon active name="arrow-forward" type="FontAwesome" />
             </Right>
           </ListItem>
         </Content>
@@ -120,7 +120,7 @@ class User extends Component {
                 })
               }
             >
-              <Icon name="apps-outline" />
+              <Icon name="th-large" type="FontAwesome" />
             </Button>
             <Button
               onPress={() =>
@@ -129,10 +129,10 @@ class User extends Component {
                 })
               }
             >
-              <Icon active name="filter" />
+              <Icon active name="feed" type="FontAwesome" />
             </Button>
             <Button active style={{ borderRadius: 0 }}>
-              <Icon name="person" />
+              <Icon name="user-o" type="FontAwesome" />
             </Button>
           </FooterTab>
         </Footer>

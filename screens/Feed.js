@@ -269,7 +269,8 @@ class Feed extends Component {
                 <Left>
                   <Icon
                     style={{ color: "#777", fontSize: 20 }}
-                    name="ellipsis-vertical-outline"
+                    name="ellipsis-v"
+                    type="FontAwesome"
                   />
                 </Left>
               </Left>
@@ -283,7 +284,9 @@ class Feed extends Component {
                 }
               >
                 <CardItem cardBody>
-                  <View style={{ flexDirection: "row" }}>
+                  <View
+                    style={{ flexDirection: "row", backgroundColor: "#e1e1e1" }}
+                  >
                     <Image
                       source={{ uri: item.postPhoto }}
                       style={{
@@ -336,9 +339,8 @@ class Feed extends Component {
                       color: "#fc764c",
                       textAlign: "center",
                     }}
-                    name={
-                      item.likes && item.likes.liked ? "heart" : "heart-outline"
-                    }
+                    name={item.likes && item.likes.liked ? "heart" : "heart-o"}
+                    type="FontAwesome"
                     //name="heart"
                   />
                   <Text style={{ color: "#999", textAlign: "center" }} note>
@@ -356,8 +358,8 @@ class Feed extends Component {
                 <View>
                   <Icon
                     style={{ color: "#777", textAlign: "center" }}
-                    name="chatbubble-outline"
-                    //name="comments"
+                    name="comment-o"
+                    type="FontAwesome"
                   />
                   <Text style={{ color: "#999", textAlign: "center" }} note>
                     {item.comments ? item.comments.count : ""}
@@ -399,10 +401,10 @@ class Feed extends Component {
                   })
                 }
               >
-                <Icon name="apps-outline" />
+                <Icon name="th-large" type="FontAwesome" />
               </Button>
               <Button active style={{ borderRadius: 0 }}>
-                <Icon active name="filter" />
+                <Icon active name="feed" type="FontAwesome" />
               </Button>
               <Button
                 onPress={() =>
@@ -411,7 +413,7 @@ class Feed extends Component {
                   })
                 }
               >
-                <Icon name="person-outline" />
+                <Icon name="user-o" type="FontAwesome" />
               </Button>
             </FooterTab>
           </Footer>
