@@ -113,22 +113,10 @@ class User extends Component {
         </Content>
         <Footer>
           <FooterTab>
-            <Button
-              onPress={() =>
-                this.navigate("Home", {
-                  name: this.state.inputName || this.state.name,
-                })
-              }
-            >
+            <Button onPress={() => this.navigate("Home")}>
               <Icon name="th-large" type="FontAwesome" />
             </Button>
-            <Button
-              onPress={() =>
-                this.navigate("Feed", {
-                  name: this.state.inputName || this.state.name,
-                })
-              }
-            >
+            <Button onPress={() => this.navigate("Feed")}>
               <Icon active name="feed" type="FontAwesome" />
             </Button>
             <Button active style={{ borderRadius: 0 }}>

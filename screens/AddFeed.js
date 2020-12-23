@@ -162,7 +162,7 @@ class AddPost extends Component {
     const { isLoading, isLogged } = this.state;
     return (
       <Container>
-        {isLoading ? <ActivityIndicator size="large" /> : null}
+        {isLoading ? <ActivityIndicator size="large" color="red" /> : null}
         <Content padder>
           {isLogged ? (
             <View>

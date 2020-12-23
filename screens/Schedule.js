@@ -6,9 +6,11 @@ import {
   View,
   StyleSheet,
   Image,
+  TouchableHighlight,
 } from "react-native";
 import moment from "moment";
 import style from "./css/styles";
+import Flag from "react-native-flags";
 //import { IMG_DIR } from "../Constants";
 import {
   Grid,
@@ -38,6 +40,7 @@ export default class Schedule extends Component {
       seasons: [],
       races: [],
     };
+    this.navigate = this.props.navigation.navigate;
   }
   onValueChange(value) {
     this.setState({
@@ -120,7 +123,7 @@ export default class Schedule extends Component {
         </Text>
         <Content>
           {isLoading ? (
-            <ActivityIndicator />
+            <ActivityIndicator size="large" color="red" />
           ) : (
             <View style={{ flex: 1 }}>
               {seasons && (
@@ -155,60 +158,71 @@ export default class Schedule extends Component {
                   {races &&
                     races.map((item, index) => {
                       return (
-                        <Col size={50} key={index} style={style.card}>
-                          <View style={{ backgroundColor: "#e1e1e1" }}>
-                            <Image
-                              style={[style.thumbnail, { resizeMode: "cover" }]}
-                              source={{
-                                uri: this.defaultImage(item.id),
-                              }}
-                            />
-                          </View>
-                          <View style={style.boxPadding}>
-                            <Text style={{ paddingVertical: 3 }}>
-                              {"Race: "}
-                              <Text style={style.textSecondary}>
-                                {item.description +
-                                  "(" +
-                                  item.country.alpha2 +
-                                  ")"}
-                              </Text>
-                            </Text>
-
-                            <Text style={{ paddingVertical: 3 }}>
-                              {"Circuit: "}
-                              <Text style={style.textSecondary}>
-                                {item.info.circuit}
-                              </Text>
-                            </Text>
-
-                            <Text style={{ paddingVertical: 3 }}>
-                              {"Status: "}
-                              <Text style={style.textSecondary}>
-                                {item.status.description}
-                              </Text>
-                            </Text>
-                            {item.winner && (
+                        <TouchableHighlight
+                          key={index}
+                          onPress={() =>
+                            this.navigate("RaceSingle", {
+                              raceID: item.id,
+                            })
+                          }
+                        >
+                          <Col size={50} style={style.card}>
+                            <View style={{ backgroundColor: "#e1e1e1" }}>
+                              <Image
+                                style={[
+                                  style.cardImage,
+                                  { resizeMode: "cover" },
+                                ]}
+                                source={{
+                                  uri: this.defaultImage(item.id),
+                                }}
+                              />
+                            </View>
+                            <View style={style.boxPadding}>
                               <Text style={{ paddingVertical: 3 }}>
-                                {"Winner: "}
+                                {"Race: "}
                                 <Text style={style.textSecondary}>
-                                  {item.winner.name +
-                                    "(" +
-                                    item.winner.country.alpha2 +
-                                    ")"}
+                                  {item.description + " "}
+                                  <Flag code={item.country.alpha2} size={16} />
                                 </Text>
                               </Text>
-                            )}
-                            <Text style={{ paddingVertical: 3 }}>
-                              {"Date: "}
-                              <Text style={style.textSecondary}>
-                                {moment
-                                  .unix(item.startDateTimestamp)
-                                  .format("DD MMMM YYYY")}
+
+                              <Text style={{ paddingVertical: 3 }}>
+                                {"Circuit: "}
+                                <Text style={style.textSecondary}>
+                                  {item.info.circuit}
+                                </Text>
                               </Text>
-                            </Text>
-                          </View>
-                        </Col>
+
+                              <Text style={{ paddingVertical: 3 }}>
+                                {"Status: "}
+                                <Text style={style.textSecondary}>
+                                  {item.status.description}
+                                </Text>
+                              </Text>
+                              {item.winner && (
+                                <Text style={{ paddingVertical: 3 }}>
+                                  {"Winner: "}
+                                  <Text style={style.textSecondary}>
+                                    {item.winner.name + " "}
+                                    <Flag
+                                      code={item.winner.country.alpha2}
+                                      size={16}
+                                    />
+                                  </Text>
+                                </Text>
+                              )}
+                              <Text style={{ paddingVertical: 3 }}>
+                                {"Date: "}
+                                <Text style={style.textSecondary}>
+                                  {moment
+                                    .unix(item.startDateTimestamp)
+                                    .format("DD MMMM YYYY")}
+                                </Text>
+                              </Text>
+                            </View>
+                          </Col>
+                        </TouchableHighlight>
                       );
                     })}
                 </Row>

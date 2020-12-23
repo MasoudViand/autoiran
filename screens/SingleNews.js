@@ -67,7 +67,7 @@ class SingleNews extends Component {
         {/* <Header /> */}
         <Content>
           {isLoading ? (
-            <ActivityIndicator />
+            <ActivityIndicator size="large" color="red" />
           ) : (
             <Card style={{ flex: 1 }}>
               <CardItem>

@@ -90,7 +90,7 @@ export default class Standing extends Component {
           رتبه بندی رانندگان فصل {data.season}
         </Text>
         {isLoading ? (
-          <ActivityIndicator />
+          <ActivityIndicator size="large" color="red" />
         ) : (
           <FlatList
             data={data.DriverStandings}

@@ -59,7 +59,8 @@ class FeedSingle extends Component {
     this.navigate = this.props.navigation.navigate;
   }
   async componentDidMount() {
-    this.setState({ isLoading: true });
+    alert(this.props.route.params.postId);
+    this.setState({ isLoading: true, post: [], user: [] });
     if (firebase.auth().currentUser) {
       await this.getUserData();
     }
@@ -472,6 +473,7 @@ class FeedSingle extends Component {
                 backgroundColor: "#e1e1e1",
               }}
               size="large"
+              color="red"
             />
           ) : null}
         </Container>

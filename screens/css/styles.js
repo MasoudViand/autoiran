@@ -31,8 +31,15 @@ export default (style = StyleSheet.create({
   },
   thumbnail: {
     flex: 1,
+    width: undefined,
+    height: undefined,
+    resizeMode: "contain",
+    //marginRight: 4,
+  },
+  cardImage: {
+    flex: 1,
     width: "100%",
-    height: 200,
+    height: 250,
     resizeMode: "contain",
     //marginRight: 4,
   },

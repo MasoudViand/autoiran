@@ -64,7 +64,7 @@ class News extends Component {
       <Container>
         {/* <Header /> */}
         {isLoading ? (
-          <ActivityIndicator />
+          <ActivityIndicator size="large" color="red" />
         ) : (
           <FlatList
             showsVerticalScrollIndicator={false}

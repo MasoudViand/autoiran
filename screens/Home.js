@@ -90,11 +90,11 @@ class Home extends Component {
         >
           <View>
             <Text style={style.text}>
-              {this.state.inputName} عزیز خوش آمدید
+              {"Wellcome"} {this.state.inputName}
             </Text>
           </View>
           <TouchableOpacity onPress={this.logOut}>
-            <Text style={style.text}>خروج</Text>
+            <Text style={style.text}>{"Logout"}</Text>
           </TouchableOpacity>
         </View>
       );
@@ -110,7 +110,7 @@ class Home extends Component {
           }}
         >
           <TouchableOpacity onPress={() => this.navigate("Login")}>
-            <Text style={style.text}>ثبت نام/ورود</Text>
+            <Text style={style.text}>{"Login/Register"}</Text>
           </TouchableOpacity>
         </View>
       );
@@ -156,15 +156,12 @@ class Home extends Component {
                           adjustsFontSizeToFit
                           style={{
                             flex: 1,
-                            writingDirection: "rtl",
                             lineHeight: 25,
-                            fontFamily: "Shabnam-Medium",
                             textAlign: "center",
-                            fontWeight: "400",
                             color: "#222",
                           }}
                         >
-                          برنامه مسابقات
+                          {"Season Schedule"}
                         </Text>
                       </CardItem>
                     </Card>
@@ -192,15 +189,12 @@ class Home extends Component {
                           adjustsFontSizeToFit
                           style={{
                             flex: 1,
-                            writingDirection: "rtl",
                             lineHeight: 25,
-                            fontFamily: "Shabnam-Medium",
                             textAlign: "center",
-                            fontWeight: "400",
                             color: "#222",
                           }}
                         >
-                          جدول رتبه بندی
+                          {"Standing"}
                         </Text>
                       </CardItem>
                     </Card>
@@ -229,15 +223,12 @@ class Home extends Component {
                           adjustsFontSizeToFit
                           style={{
                             flex: 1,
-                            writingDirection: "rtl",
                             lineHeight: 25,
-                            fontFamily: "Shabnam-Medium",
                             textAlign: "center",
-                            fontWeight: "400",
                             color: "#222",
                           }}
                         >
-                          پخش زنده
+                          {"Live Coverage"}
                         </Text>
                       </CardItem>
                     </Card>
@@ -264,22 +255,19 @@ class Home extends Component {
                           adjustsFontSizeToFit
                           style={{
                             flex: 1,
-                            writingDirection: "rtl",
                             lineHeight: 25,
-                            fontFamily: "Shabnam-Medium",
                             textAlign: "center",
-                            fontWeight: "400",
                             color: "#222",
                           }}
                         >
-                          آخرین اخبار
+                          {"News"}
                         </Text>
                       </CardItem>
                     </Card>
                   </TouchableOpacity>
                 </Col>
               </Row>
-              <Row>
+              {/* <Row>
                 <Col>
                   <TouchableOpacity
                     onPress={() =>
@@ -301,21 +289,18 @@ class Home extends Component {
                           adjustsFontSizeToFit
                           style={{
                             flex: 1,
-                            writingDirection: "rtl",
                             lineHeight: 25,
-                            fontFamily: "Shabnam-Medium",
-                            textAlign: "right",
-                            fontWeight: "400",
+                            textAlign: "center",
                             color: "#222",
                           }}
                         >
-                          برنامه مسابقات
+                          {"Race Schedule"}
                         </Text>
                       </CardItem>
                     </Card>
                   </TouchableOpacity>
                 </Col>
-              </Row>
+              </Row> */}
             </Grid>
           </ScrollView>
           <Footer>

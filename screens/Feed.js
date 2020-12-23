@@ -184,7 +184,11 @@ class Feed extends Component {
       // Check If Loading
       if (this.state.isRefreshing) {
         return (
-          <ActivityIndicator size="large" style={{ paddingVertical: 20 }} />
+          <ActivityIndicator
+            size="large"
+            color="red"
+            style={{ paddingVertical: 20 }}
+          />
         );
       } else {
         return null;

@@ -33,7 +33,7 @@ class Chat extends React.Component<Props> {
   constructor(props) {
     super(props);
     const params = this.props.route.params;
-    name = params.name;
+    //name = params.name;
     this.navigate = this.props.navigation.navigate;
     this.state = {
       messages: [],
