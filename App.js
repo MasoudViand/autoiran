@@ -20,6 +20,8 @@ import Feed from "./screens/Feed";
 import AddFeed from "./screens/AddFeed";
 import FeedSingle from "./screens/FeedSingle";
 import RaceSingle from "./screens/RaceSingle";
+import PodCast from "./screens/PodCast";
+import PodCastSingle from "./screens/PodCastSignle";
 //import { Button } from "react-native";
 import {
   Button,
@@ -187,6 +189,11 @@ function MyDrawer() {
       <Drawer.Screen name="News" component={News} />
       <Drawer.Screen name="Live" component={Chat} />
       <Drawer.Screen
+        name="PodCast"
+        component={PodCast}
+        options={{ title: "Podcast" }}
+      />
+      <Drawer.Screen
         name="Login"
         component={Login}
         options={{ title: "Login" }}
@@ -223,6 +230,11 @@ function MyDrawer() {
         options={{ title: "" }}
       />
       <Drawer.Screen
+        name="PodCastSingle"
+        component={PodCastSingle}
+        options={{ title: "" }}
+      />
+      <Drawer.Screen
         name="User"
         component={User}
         options={{ title: "User Account" }}
@@ -236,9 +248,14 @@ function CustomDrawerContent(props) {
   newState.routes = newState.routes.filter(
     //(item) => item.name !== "RaceSingle"
     (item) =>
-      !["RaceSingle", "FeedSingle", "Login", "SingleNews", "AddFeed"].includes(
-        item.name
-      )
+      ![
+        "RaceSingle",
+        "FeedSingle",
+        "Login",
+        "SingleNews",
+        "AddFeed",
+        "PodCastSingle",
+      ].includes(item.name)
   );
   return (
     <DrawerContentScrollView {...props}>

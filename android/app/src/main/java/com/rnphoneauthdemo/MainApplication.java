@@ -10,6 +10,7 @@ import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import com.brentvatne.react.ReactVideoPackage;
+import com.reactnativecommunity.picker.RNCPickerPackage;
 
 //import io.invertase.firebase.auth.RNFirebaseAuthPackage;
 //import io.invertase.firebase.database.RNFirebaseDatabasePackage;
@@ -32,6 +33,8 @@ public class MainApplication extends Application implements ReactApplication {
           //packages.add(new RNFirebaseAuthPackage());
           packages.add(new ReactVideoPackage());
           //new ReactVideoPackage()
+          packages.add(new RNCPickerPackage());
+          //new RNCPickerPackage()
           return packages;
         }
 
