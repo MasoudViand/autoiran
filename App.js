@@ -178,66 +178,67 @@ function MyDrawer() {
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
       {/* <Drawer.Screen name="Home" component={App} /> */}
-      <Drawer.Screen name="Home" component={Home} />
+      <Drawer.Screen name="Home" component={Home}  options={{ unmountOnBlur:true }} />
       <Drawer.Screen
         name="Feed"
         component={Feed}
         options={{
           rightBtn: true,
+         // unmountOnBlur:true
         }}
       />
-      <Drawer.Screen name="News" component={News} />
-      <Drawer.Screen name="Live" component={Chat} />
+      <Drawer.Screen name="News" component={News} options={{ unmountOnBlur:true }} />
+      <Drawer.Screen name="Chat" component={Chat} options={{title: "Live", unmountOnBlur:true }} />
       <Drawer.Screen
         name="PodCast"
         component={PodCast}
-        options={{ title: "Podcast" }}
+        options={{ title: "Podcast", unmountOnBlur: true }}
       />
       <Drawer.Screen
         name="Login"
         component={Login}
-        options={{ title: "Login" }}
+        options={{ title: "Login", unmountOnBlur:true }}
       />
 
       <Drawer.Screen
         name="SingleNews"
         component={SingleNews}
-        options={{ title: "" }}
+        options={{ title: "", unmountOnBlur:true }}
       />
       <Drawer.Screen
         name="Standing"
         component={Standing}
-        options={{ title: "Standing" }}
+        options={{ title: "Standing", unmountOnBlur:true }}
       />
       <Drawer.Screen
         name="Schedule"
         component={Schedule}
-        options={{ title: "Season Schedule" }}
+        options={{ title: "Season Schedule", unmountOnBlur:true }}
       />
       <Drawer.Screen
         name="AddFeed"
         component={AddFeed}
-        options={{ title: "Send Post" }}
+        options={{ title: "Send Post", unmountOnBlur:true }}
       />
       <Drawer.Screen
         name="FeedSingle"
         component={FeedSingle}
-        options={{ title: "" }}
+        options={{ title: "", unmountOnBlur:true }}
       />
       <Drawer.Screen
         name="RaceSingle"
         component={RaceSingle}
-        options={{ title: "" }}
+        options={{ title: "", unmountOnBlur:true }}
       />
       <Drawer.Screen
         name="PodCastSingle"
         component={PodCastSingle}
-        options={{ title: "" }}
+        options={{ title: "", unmountOnBlur:true }}
       />
       <Drawer.Screen
         name="User"
         component={User}
-        options={{ title: "User Account" }}
+        options={{ title: "User Account", unmountOnBlur:true }}
       />
     </Drawer.Navigator>
   );

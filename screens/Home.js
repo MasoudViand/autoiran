@@ -33,6 +33,7 @@ import {
 } from "native-base";
 import style from "./css/styles";
 import { ScrollView } from "react-native-gesture-handler";
+import TabBar from "./components/TabBar";
 
 class Home extends Component {
   constructor(props) {
@@ -205,9 +206,7 @@ class Home extends Component {
                 <Col size={40}>
                   <TouchableOpacity
                     onPress={() =>
-                      this.navigate("Chat", {
-                        name: this.state.inputName || this.state.name,
-                      })
+                      this.navigate("Chat")
                     }
                   >
                     <Card>
@@ -304,29 +303,7 @@ class Home extends Component {
             </Grid>
           </ScrollView>
           <Footer>
-            <FooterTab>
-              <Button active style={{ borderRadius: 0 }}>
-                <Icon active name="th-large" type="FontAwesome" />
-              </Button>
-              <Button
-                onPress={() =>
-                  this.navigate("Feed", {
-                    name: this.state.inputName || this.state.name,
-                  })
-                }
-              >
-                <Icon name="feed" type="FontAwesome" />
-              </Button>
-              <Button
-                onPress={() =>
-                  this.navigate("User", {
-                    name: this.state.inputName || this.state.name,
-                  })
-                }
-              >
-                <Icon name="user-o" type="FontAwesome" />
-              </Button>
-            </FooterTab>
+            <TabBar navigate={this.navigate} route={"Home"} />
           </Footer>
         </Container>
       </SafeAreaView>

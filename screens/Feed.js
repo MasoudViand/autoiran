@@ -49,8 +49,8 @@ import {
 //import { NavigationEvents } from "@react-navigation/native";
 import moment from "jalali-moment";
 import "moment/min/locales";
+import TabBar from "./components/TabBar";
 class Feed extends Component {
-  _isMounted = false;
   constructor(props) {
     super(props);
     this.state = {
@@ -63,9 +63,9 @@ class Feed extends Component {
       loading: false,
     };
     this.navigate = this.props.navigation.navigate;
+    this._isMounted = true;
   }
   async componentDidMount() {
-    this._isMounted = true;
     if (firebase.auth().currentUser) {
       await this.getUserData();
     }
@@ -85,10 +85,12 @@ class Feed extends Component {
     await ref.once("value").then((snapshot) => {
       var name = snapshot.val().Name;
       var avatar = snapshot.val().Avatar;
+      if (this._isMounted) {
       this.setState({
         user: { userId: userId, userName: name, userAvatar: avatar },
         isLogged: true,
       });
+    }
       // console.log(this.state.user);
     });
   };
@@ -114,12 +116,15 @@ class Feed extends Component {
           //end add likes
           var comment = await getComments(postId);
           item.comments = comment;
+          if (this._isMounted) {
           this.setState({ isLoading: false });
+          }
           return item;
         });
 
         //console.log(posts);
         let lastVisible = posts[posts.length - 1].createdAt;
+        if (this._isMounted) {
         this.setState({
           DATA: posts,
           lastVisible: lastVisible,
@@ -128,6 +133,7 @@ class Feed extends Component {
       this.setState({
         isRefreshing: false,
       });
+    }
     } catch (error) {
       console.log(error);
       this.setState({
@@ -165,11 +171,13 @@ class Feed extends Component {
 
         let lastVisible = additionalQuery[additionalQuery.length - 1].createdAt;
         //Set State
+        if (this._isMounted) {
         this.setState({
           DATA: [...this.state.DATA, ...additionalQuery],
           lastVisible: lastVisible,
           isRefreshing: false,
         });
+      }
       }
     } catch (error) {
       console.log(error);
@@ -397,29 +405,7 @@ class Feed extends Component {
           </Grid>
           {/* </ScrollView> */}
           <Footer>
-            <FooterTab>
-              <Button
-                onPress={() =>
-                  this.navigate("Home", {
-                    name: this.state.inputName || this.state.name,
-                  })
-                }
-              >
-                <Icon name="th-large" type="FontAwesome" />
-              </Button>
-              <Button active style={{ borderRadius: 0 }}>
-                <Icon active name="feed" type="FontAwesome" />
-              </Button>
-              <Button
-                onPress={() =>
-                  this.navigate("User", {
-                    name: this.state.inputName || this.state.name,
-                  })
-                }
-              >
-                <Icon name="user-o" type="FontAwesome" />
-              </Button>
-            </FooterTab>
+            <TabBar navigate={this.navigate} route={"Feed"} />
           </Footer>
         </Container>
       </SafeAreaView>

@@ -200,8 +200,9 @@ class RaceSingle extends Component {
                         </Col>
                         <Col size={50}>
                           <Text style={style.text}>
-                            {item.team.name}{" "}
-                            <Flag code={item.team.country.alpha2} size={16} />
+                          <Flag code={item.team.country.alpha2} size={24} />
+                          {" "}{item.team.name}
+                            
                           </Text>
                           <Text style={{ color: "#777", fontSize: 14 }}>
                             {item.parentTeam ? item.parentTeam.name : ""}

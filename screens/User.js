@@ -30,6 +30,7 @@ import {
   ListItem,
   Switch,
 } from "native-base";
+import TabBar from "./components/TabBar";
 class User extends Component {
   constructor(props) {
     super(props);
@@ -72,7 +73,7 @@ class User extends Component {
           <ListItem icon>
             <Left>
               <Button style={{ backgroundColor: "#FF9501" }}>
-                <Icon active name="airplane" type="FontAwesome" />
+                <Icon active name="plane" type="FontAwesome" />
               </Button>
             </Left>
             <Body>
@@ -93,36 +94,12 @@ class User extends Component {
             </Body>
             <Right>
               <Text>GeekyAnts</Text>
-              <Icon active name="arrow-forward" type="FontAwesome" />
-            </Right>
-          </ListItem>
-          <ListItem icon>
-            <Left>
-              <Button style={{ backgroundColor: "#007AFF" }}>
-                <Icon active name="bluetooth" type="FontAwesome" />
-              </Button>
-            </Left>
-            <Body>
-              <Text>Bluetooth</Text>
-            </Body>
-            <Right>
-              <Text>On</Text>
-              <Icon active name="arrow-forward" type="FontAwesome" />
+              <Icon active name="chevron-right" type="FontAwesome" />
             </Right>
           </ListItem>
         </Content>
         <Footer>
-          <FooterTab>
-            <Button onPress={() => this.navigate("Home")}>
-              <Icon name="th-large" type="FontAwesome" />
-            </Button>
-            <Button onPress={() => this.navigate("Feed")}>
-              <Icon active name="feed" type="FontAwesome" />
-            </Button>
-            <Button active style={{ borderRadius: 0 }}>
-              <Icon name="user-o" type="FontAwesome" />
-            </Button>
-          </FooterTab>
+          <TabBar navigate={this.navigate} route={"User"} />
         </Footer>
       </Container>
     );

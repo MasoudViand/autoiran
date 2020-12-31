@@ -46,6 +46,7 @@ class Chat extends React.Component<Props> {
       vUrl:
         "https://sl32.telewebion.com/devices/_definst_/tv3-500k.stream/chunks.m3u8?nimblesessionid=21412746&wmsAuthSign=aXNfZnJlZT0xJnNlcnZlcl90aW1lPTEwLzEvMjAyMCA1Ojc6MTMgQU0maGFzaF92YWx1ZT1LalNVTVVDUDNuREc5MUU1YWZkNmdnPT0mdmFsaWRtaW51dGVzPTYwMDA=",
     };
+    this._isMounted = true;
   }
 
   // state = {
@@ -65,7 +66,9 @@ class Chat extends React.Component<Props> {
       await fetch("https://cigarettedirectory.com/api/live")
         .then((response) => response.json())
         .then((json) => {
+          if (this._isMounted) {
           this.setState({ streamList: json, vUrl: json[0].url });
+          }
         });
     } catch (error) {
       console.error("error", error);
@@ -278,15 +281,21 @@ class Chat extends React.Component<Props> {
     if (!auth().currentUser) {
       this.setState({ modalVisible: true });
     }
-    Fire.shared.on((message) =>
+    if (this._isMounted) {
+    Fire.shared.on((message) => {
+      if (this._isMounted) {
       this.setState((previousState) => ({
         messages: GiftedChat.append(previousState.messages, message),
       }))
+    }
+    }
     );
+    }
     //alert(this.messages);
   }
   componentWillUnmount() {
     Fire.shared.off();
+    this._isMounted = false;
   }
 }
 export default Chat;

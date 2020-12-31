@@ -57,15 +57,18 @@ class FeedSingle extends Component {
       commentText: "",
     };
     this.navigate = this.props.navigation.navigate;
+    this._isMounted = true;
   }
   async componentDidMount() {
-    alert(this.props.route.params.postId);
     this.setState({ isLoading: true, post: [], user: [] });
     if (firebase.auth().currentUser) {
       await this.getUserData();
     }
     await this.getPost(this.state.postId);
     this.setState({ isLoading: false });
+  }
+  componentWillUnmount () {
+    this._isMounted = false;
   }
   getUserData = async () => {
     let userId = firebase.auth().currentUser.uid;
@@ -74,10 +77,12 @@ class FeedSingle extends Component {
     await ref.once("value").then((snapshot) => {
       var name = snapshot.val().Name;
       var avatar = snapshot.val().Avatar;
+      if (this._isMounted) {
       this.setState({
         user: { userId: userId, userName: name, userAvatar: avatar },
         isLogged: true,
       });
+    }
     });
   };
 
@@ -102,7 +107,9 @@ class FeedSingle extends Component {
         var comment = await getComments(postId);
         post.comments = comment;
         //end add comments
+        if (this._isMounted) {
         this.setState({ post: post });
+        }
       }
     } catch (e) {
       console.error(e);

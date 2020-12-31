@@ -27,6 +27,8 @@ import {
   Content,
   Form,
   Icon,
+  Tabs,
+  Tab,
 } from "native-base";
 export default class Schedule extends Component {
   constructor(props) {
@@ -39,6 +41,8 @@ export default class Schedule extends Component {
       selected: "null",
       seasons: [],
       races: [],
+      driverStanding: [],
+      teamStanding: []
     };
     this.navigate = this.props.navigation.navigate;
   }
@@ -90,17 +94,37 @@ export default class Schedule extends Component {
         this.setState({ isLoading: false });
       });
   }
-  getCurrent() {
-    fetch("https://ergast.com/api/f1/current.json")
+  async getDriverStanding(season) {
+    //season = this.state.selected;
+  // this.setState({ isLoading: true });
+   await fetch(
+     "https://api.sofascore.com/api/v1/stage/" + season + "/standings/competitor"
+   )
+     .then((response) => response.json())
+     .then((json) => {
+       this.setState({ driverStanding: json.standings });
+     })
+     .catch((error) => console.error(error))
+     .finally(() => {
+       this.setState({ isLoading: false });
+     });
+     
+  }
+  async getTeamStanding(season) {
+    season = this.state.selected;
+    this.setState({ isLoading: true });
+    await fetch(
+      "https://api.sofascore.com/api/v1/stage/" + season + "standings/team"
+    )
       .then((response) => response.json())
       .then((json) => {
-        this.setState({ data: json.MRData.RaceTable });
+        this.setState({ teamStanding: json.standing });
       })
       .catch((error) => console.error(error))
       .finally(() => {
         this.setState({ isLoading: false });
       });
-  }
+   }
   defaultImage(id) {
     let defaultImage = "https://via.placeholder.com/150?text=No%20image";
     let webImage = "https://api.sofascore.com/api/v1/stage/" + id + "/image";
@@ -114,14 +138,13 @@ export default class Schedule extends Component {
     return defaultImage;
   }
   render() {
-    const { data, isLoading, seasons, races } = this.state;
+    const { data, isLoading, seasons, races, driverStanding, teamStanding } = this.state;
 
     return (
       <Container style={{ flex: 1, padding: 24 }}>
         <Text style={[style.text, { marginBottom: 15, fontSize: 26 }]}>
           {"Season Schedule"}
         </Text>
-        <Content>
           {isLoading ? (
             <ActivityIndicator size="large" color="red" />
           ) : (
@@ -153,8 +176,21 @@ export default class Schedule extends Component {
                   </Picker>
                 </Form>
               )}
-              <Grid>
-                <Row style={{ flexDirection: "column" }}>
+              <Tabs 
+              tabContainerStyle={{ elevation: 0}}
+              tabBarUnderlineStyle={{borderBottomWidth:4, borderBottomColor:"#e1e1e1"}}
+              onChangeTab={({ i }) => {
+                if (i === 1) {
+                
+                    this.getDriverStanding(this.state.selected)
+                  
+                }
+              }}
+              >
+          <Tab activeTabStyle={{backgroundColor: '#fff'}} activeTextStyle={{color:"#222"}} tabStyle={{backgroundColor: '#fff'}} textStyle={{color: '#999'}} heading="Races">
+            <Content>
+          <Grid>
+                <Row style={{ flexDirection: "column", paddingTop:20 }}>
                   {races &&
                     races.map((item, index) => {
                       return (
@@ -227,9 +263,68 @@ export default class Schedule extends Component {
                     })}
                 </Row>
               </Grid>
+              </Content>
+          </Tab>
+          <Tab activeTabStyle={{backgroundColor: '#fff'}} activeTextStyle={{color:"#222"}} tabStyle={{backgroundColor: '#fff'}} textStyle={{color: '#999'}} heading="Standing">
+          <View style={{ paddingBottom: 15, paddingTop:20 }}>
+                <Row style={{ flex: 1, paddingBottom: 10 }}>
+                  <Col size={8}>
+                    <Text style={style.text}>Pos</Text>
+                  </Col>
+                  <Col size={80}>
+                    <Text style={style.text}> Driver</Text>
+                  </Col>
+                    <Col size={12}>
+                      <Text style={[style.text, { textAlign: "center" }]}>
+                        Points
+                      </Text>
+                    </Col>
+                </Row>
+              </View>
+              <Content>
+              {driverStanding.length === 0 && (
+                <ActivityIndicator size="large" color="red" />
+              )}
+              {driverStanding &&
+                driverStanding.map((item, index) => {
+                  return (
+                    
+                    <View key={index} style={{ paddingBottom: 25, height: 55 }}>
+                      <Row style={{ flex: 1, paddingBottom: 25 }}>
+                        <Col size={8}>
+                          <Text style={{textAlign:"center", lineHeight:40}}>
+                            {item.position !== 0 ? item.position : ""}
+                          </Text>
+                        </Col>
+                        <Col size={80}>
+                          <Text style={style.text}>
+                          <Flag code={item.team.country.alpha2} size={24} />
+                          {" "}{item.team.name}
+                            
+                          </Text>
+                          <Text style={{ color: "#777", fontSize: 14 }}>
+                            {item.parentTeam ? item.parentTeam.name : ""}
+                          </Text>
+                        </Col>
+                          <Col size={12}>
+                            <Text style={[style.text, { textAlign: "center" }]}>
+                              {item.points}{" "}
+                            </Text>
+                          </Col>
+                      </Row>
+                    </View>
+                   
+                  );
+                })}
+                 </Content>
+          </Tab>
+          {/* <Tab heading="Tab3">
+          <Text>{"Tab3"}</Text>
+          </Tab> */}
+        </Tabs>
+              
             </View>
           )}
-        </Content>
       </Container>
     );
   }
